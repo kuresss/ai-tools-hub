@@ -1,0 +1,174 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="AI Translator"
+  description="Translate text between English and other languages using AI. Free, private, runs entirely in your browser with no API keys needed."
+  isAI={true}
+>
+  <div id="translator-app">
+    <div id="tr-status" class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-700">
+      Select a language pair and click "Translate" to load the AI model (first time may take 30-60 seconds).
+    </div>
+
+    <div class="flex items-center gap-4 mb-4">
+      <select id="tr-lang" class="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <option value="en-fr">English → French</option>
+        <option value="en-de">English → German</option>
+        <option value="en-es">English → Spanish</option>
+        <option value="en-zh">English → Chinese</option>
+        <option value="fr-en">French → English</option>
+        <option value="de-en">German → English</option>
+        <option value="es-en">Spanish → English</option>
+        <option value="zh-en">Chinese → English</option>
+      </select>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Source Text</label>
+        <textarea
+          id="tr-input"
+          rows="8"
+          placeholder="Enter text to translate..."
+          class="w-full border border-gray-300 rounded-lg p-4 text-base resize-y focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+        ></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Translation</label>
+        <textarea
+          id="tr-output"
+          rows="8"
+          readonly
+          placeholder="Translation will appear here..."
+          class="w-full border border-gray-300 rounded-lg p-4 text-base bg-gray-50 resize-y"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4 mt-4">
+      <button id="tr-run" class="bg-indigo-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        Translate
+      </button>
+      <button id="tr-copy" class="bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg text-sm hover:bg-gray-300 transition-colors">
+        Copy Translation
+      </button>
+      <button id="tr-clear" class="bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg text-sm hover:bg-gray-300 transition-colors">
+        Clear
+      </button>
+      <div id="tr-spinner" class="hidden">
+        <svg class="animate-spin h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO Content -->
+  <div class="mt-12 prose prose-sm max-w-none">
+    <h2>Free AI Translation Tool</h2>
+    <p>Translate text between English and French, German, Spanish, and Chinese using AI. Our translator uses neural machine translation models that run directly in your browser - your text is never sent to any server.</p>
+
+    <h3>Supported Language Pairs</h3>
+    <ul>
+      <li>English ↔ French</li>
+      <li>English ↔ German</li>
+      <li>English ↔ Spanish</li>
+      <li>English ↔ Chinese</li>
+    </ul>
+
+    <h3>Privacy-First Translation</h3>
+    <p>Unlike Google Translate or DeepL, this tool processes your text entirely on your device. The AI model is downloaded once and runs locally. This makes it ideal for translating sensitive or confidential documents.</p>
+  </div>
+</ToolLayout>
+
+<script type="module">
+  import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.5.1';
+
+  const models = {
+    'en-fr': 'Xenova/opus-mt-en-fr',
+    'en-de': 'Xenova/opus-mt-en-de',
+    'en-es': 'Xenova/opus-mt-en-es',
+    'en-zh': 'Xenova/opus-mt-en-zh',
+    'fr-en': 'Xenova/opus-mt-fr-en',
+    'de-en': 'Xenova/opus-mt-de-en',
+    'es-en': 'Xenova/opus-mt-es-en',
+    'zh-en': 'Xenova/opus-mt-zh-en',
+  };
+
+  let translator = null;
+  let loadedLang = null;
+
+  const statusEl = document.getElementById('tr-status');
+  const langSelect = document.getElementById('tr-lang');
+  const inputEl = document.getElementById('tr-input');
+  const outputEl = document.getElementById('tr-output');
+  const runBtn = document.getElementById('tr-run');
+  const spinner = document.getElementById('tr-spinner');
+
+  async function loadModel(lang) {
+    const modelName = models[lang];
+    if (!modelName) return;
+
+    statusEl.className = 'mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700';
+    statusEl.textContent = `Loading translation model for ${lang}...`;
+    runBtn.disabled = true;
+    spinner.classList.remove('hidden');
+
+    try {
+      translator = await pipeline('translation', modelName);
+      loadedLang = lang;
+      statusEl.className = 'mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700';
+      statusEl.textContent = `Model loaded! Ready to translate (${lang}).`;
+    } catch (err) {
+      statusEl.className = 'mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700';
+      statusEl.textContent = 'Failed to load model: ' + err.message;
+      translator = null;
+    } finally {
+      runBtn.disabled = false;
+      spinner.classList.add('hidden');
+    }
+  }
+
+  runBtn.addEventListener('click', async () => {
+    const text = inputEl.value.trim();
+    if (!text) {
+      alert('Please enter text to translate.');
+      return;
+    }
+
+    const lang = langSelect.value;
+    if (!translator || loadedLang !== lang) {
+      await loadModel(lang);
+      if (!translator) return;
+    }
+
+    runBtn.disabled = true;
+    spinner.classList.remove('hidden');
+    statusEl.textContent = 'Translating...';
+
+    try {
+      const result = await translator(text.slice(0, 1000), { max_new_tokens: 512 });
+      outputEl.value = result[0].translation_text;
+      statusEl.className = 'mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700';
+      statusEl.textContent = 'Translation complete!';
+    } catch (err) {
+      statusEl.className = 'mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700';
+      statusEl.textContent = 'Error: ' + err.message;
+    } finally {
+      runBtn.disabled = false;
+      spinner.classList.add('hidden');
+    }
+  });
+
+  document.getElementById('tr-copy').addEventListener('click', () => {
+    navigator.clipboard.writeText(outputEl.value);
+  });
+
+  document.getElementById('tr-clear').addEventListener('click', () => {
+    inputEl.value = '';
+    outputEl.value = '';
+  });
+</script>

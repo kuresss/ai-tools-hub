@@ -1,0 +1,172 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="AI Sentiment Analyzer"
+  description="Analyze the sentiment and emotion of any text using AI. Detect positive, negative, or neutral tone instantly. Free, private, runs in your browser."
+  isAI={true}
+>
+  <div id="sentiment-app">
+    <div id="sa-status" class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-700">
+      Click "Analyze" to load the AI model (first time may take 15-30 seconds to download).
+    </div>
+
+    <textarea
+      id="sa-input"
+      rows="6"
+      placeholder="Enter the text you want to analyze for sentiment..."
+      class="w-full border border-gray-300 rounded-lg p-4 text-base resize-y focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+    ></textarea>
+
+    <div class="flex items-center gap-4 mt-4">
+      <button id="sa-run" class="bg-indigo-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        Analyze Sentiment
+      </button>
+      <button id="sa-clear" class="bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg text-sm hover:bg-gray-300 transition-colors">
+        Clear
+      </button>
+      <div id="sa-spinner" class="hidden">
+        <svg class="animate-spin h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <div id="sa-result" class="mt-6 hidden">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div id="sa-main-result" class="p-6 rounded-xl text-center">
+          <div id="sa-emoji" class="text-6xl mb-3"></div>
+          <div id="sa-label" class="text-2xl font-bold mb-2"></div>
+          <div id="sa-score" class="text-sm text-gray-500"></div>
+        </div>
+        <div class="space-y-3">
+          <h3 class="font-semibold">Breakdown</h3>
+          <div id="sa-bars"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO Content -->
+  <div class="mt-12 prose prose-sm max-w-none">
+    <h2>Free AI Sentiment Analysis Tool</h2>
+    <p>Analyze the sentiment of any text using AI. Our tool detects whether text is positive, negative, or neutral, with a confidence score. Perfect for analyzing customer reviews, social media posts, emails, and more.</p>
+
+    <h3>How does Sentiment Analysis work?</h3>
+    <p>This tool uses a pre-trained natural language processing (NLP) model that runs entirely in your browser using Transformers.js. The model analyzes the emotional tone and context of your text to determine its sentiment.</p>
+
+    <h3>Use Cases</h3>
+    <ul>
+      <li>Analyzing customer reviews and feedback</li>
+      <li>Monitoring social media sentiment</li>
+      <li>Evaluating email tone before sending</li>
+      <li>Content quality assessment</li>
+      <li>Market research and opinion mining</li>
+    </ul>
+  </div>
+</ToolLayout>
+
+<script type="module">
+  import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.5.1';
+
+  let classifier = null;
+  const statusEl = document.getElementById('sa-status');
+  const inputEl = document.getElementById('sa-input');
+  const runBtn = document.getElementById('sa-run');
+  const spinner = document.getElementById('sa-spinner');
+  const resultEl = document.getElementById('sa-result');
+
+  async function loadModel() {
+    statusEl.className = 'mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700';
+    statusEl.textContent = 'Loading AI model...';
+    runBtn.disabled = true;
+    spinner.classList.remove('hidden');
+
+    try {
+      classifier = await pipeline('sentiment-analysis', 'Xenova/distilbert-base-uncased-finetuned-sst-2-english', {
+        dtype: 'q8',
+      });
+      statusEl.className = 'mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700';
+      statusEl.textContent = 'AI model loaded! Ready to analyze.';
+    } catch (err) {
+      statusEl.className = 'mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700';
+      statusEl.textContent = 'Failed to load model: ' + err.message;
+    } finally {
+      runBtn.disabled = false;
+      spinner.classList.add('hidden');
+    }
+  }
+
+  runBtn.addEventListener('click', async () => {
+    const text = inputEl.value.trim();
+    if (!text) {
+      alert('Please enter some text to analyze.');
+      return;
+    }
+
+    if (!classifier) {
+      await loadModel();
+      if (!classifier) return;
+    }
+
+    runBtn.disabled = true;
+    spinner.classList.remove('hidden');
+
+    try {
+      const result = await classifier(text.slice(0, 512), { topk: null });
+
+      const mainResult = result[0];
+      const emojiMap = { POSITIVE: '😊', NEGATIVE: '😟', NEUTRAL: '😐' };
+      const colorMap = {
+        POSITIVE: 'bg-green-50 border border-green-200',
+        NEGATIVE: 'bg-red-50 border border-red-200',
+        NEUTRAL: 'bg-gray-50 border border-gray-200',
+      };
+      const barColorMap = {
+        POSITIVE: 'bg-green-500',
+        NEGATIVE: 'bg-red-500',
+        NEUTRAL: 'bg-gray-500',
+      };
+
+      document.getElementById('sa-main-result').className =
+        `p-6 rounded-xl text-center ${colorMap[mainResult.label] || colorMap.NEUTRAL}`;
+      document.getElementById('sa-emoji').textContent = emojiMap[mainResult.label] || '🤔';
+      document.getElementById('sa-label').textContent = mainResult.label;
+      document.getElementById('sa-score').textContent = `Confidence: ${(mainResult.score * 100).toFixed(1)}%`;
+
+      const barsHtml = result
+        .sort((a, b) => b.score - a.score)
+        .map(
+          (r) => `
+        <div class="flex items-center gap-3">
+          <span class="w-24 text-sm font-medium">${r.label}</span>
+          <div class="flex-1 bg-gray-200 rounded-full h-4">
+            <div class="${barColorMap[r.label] || 'bg-gray-500'} h-4 rounded-full transition-all" style="width: ${(r.score * 100).toFixed(1)}%"></div>
+          </div>
+          <span class="text-sm text-gray-600 w-16 text-right">${(r.score * 100).toFixed(1)}%</span>
+        </div>
+      `
+        )
+        .join('');
+
+      document.getElementById('sa-bars').innerHTML = barsHtml;
+      resultEl.classList.remove('hidden');
+
+      statusEl.className = 'mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700';
+      statusEl.textContent = 'Analysis complete!';
+    } catch (err) {
+      statusEl.className = 'mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700';
+      statusEl.textContent = 'Error: ' + err.message;
+    } finally {
+      runBtn.disabled = false;
+      spinner.classList.add('hidden');
+    }
+  });
+
+  document.getElementById('sa-clear').addEventListener('click', () => {
+    inputEl.value = '';
+    resultEl.classList.add('hidden');
+  });
+</script>

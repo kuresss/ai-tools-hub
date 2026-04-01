@@ -1,0 +1,110 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Word & Character Counter"
+  description="Count words, characters, sentences, paragraphs, and estimate reading time. Free online tool with real-time counting."
+>
+  <div id="word-counter-app">
+    <textarea
+      id="wc-input"
+      rows="10"
+      placeholder="Type or paste your text here..."
+      class="w-full border border-gray-300 rounded-lg p-4 text-base resize-y focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+    ></textarea>
+
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6">
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="wc-words" class="text-2xl font-bold text-indigo-600">0</div>
+        <div class="text-sm text-gray-500">Words</div>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="wc-chars" class="text-2xl font-bold text-indigo-600">0</div>
+        <div class="text-sm text-gray-500">Characters</div>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="wc-chars-no-space" class="text-2xl font-bold text-indigo-600">0</div>
+        <div class="text-sm text-gray-500">No Spaces</div>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="wc-sentences" class="text-2xl font-bold text-indigo-600">0</div>
+        <div class="text-sm text-gray-500">Sentences</div>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="wc-paragraphs" class="text-2xl font-bold text-indigo-600">0</div>
+        <div class="text-sm text-gray-500">Paragraphs</div>
+      </div>
+    </div>
+
+    <div class="flex gap-4 mt-4 text-sm text-gray-500">
+      <span>Reading time: <strong id="wc-reading-time">0 min</strong></span>
+      <span>Speaking time: <strong id="wc-speaking-time">0 min</strong></span>
+    </div>
+
+    <div class="mt-6 flex gap-3">
+      <button id="wc-copy" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors">
+        Copy Text
+      </button>
+      <button id="wc-clear" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-300 transition-colors">
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- SEO Content -->
+  <div class="mt-12 prose prose-sm max-w-none">
+    <h2>Free Online Word Counter Tool</h2>
+    <p>Count words, characters, sentences, and paragraphs instantly as you type. Our word counter tool provides real-time statistics including reading time and speaking time estimates. Perfect for writers, students, bloggers, and content creators.</p>
+
+    <h3>Features</h3>
+    <ul>
+      <li><strong>Real-time counting</strong> - Statistics update instantly as you type</li>
+      <li><strong>Character count</strong> - With and without spaces</li>
+      <li><strong>Reading time</strong> - Based on average 200 WPM reading speed</li>
+      <li><strong>Speaking time</strong> - Based on average 130 WPM speaking speed</li>
+      <li><strong>No sign-up required</strong> - Just paste and count</li>
+    </ul>
+  </div>
+</ToolLayout>
+
+<script>
+  const input = document.getElementById('wc-input') as HTMLTextAreaElement;
+  const wordsEl = document.getElementById('wc-words')!;
+  const charsEl = document.getElementById('wc-chars')!;
+  const charsNoSpaceEl = document.getElementById('wc-chars-no-space')!;
+  const sentencesEl = document.getElementById('wc-sentences')!;
+  const paragraphsEl = document.getElementById('wc-paragraphs')!;
+  const readingTimeEl = document.getElementById('wc-reading-time')!;
+  const speakingTimeEl = document.getElementById('wc-speaking-time')!;
+
+  function update() {
+    const text = input.value;
+    const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+    const chars = text.length;
+    const charsNoSpace = text.replace(/\s/g, '').length;
+    const sentences = text.trim() === '' ? 0 : text.split(/[.!?]+/).filter(s => s.trim()).length;
+    const paragraphs = text.trim() === '' ? 0 : text.split(/\n\s*\n/).filter(p => p.trim()).length;
+    const readingMin = Math.ceil(words / 200);
+    const speakingMin = Math.ceil(words / 130);
+
+    wordsEl.textContent = String(words);
+    charsEl.textContent = String(chars);
+    charsNoSpaceEl.textContent = String(charsNoSpace);
+    sentencesEl.textContent = String(sentences);
+    paragraphsEl.textContent = String(paragraphs);
+    readingTimeEl.textContent = `${readingMin} min`;
+    speakingTimeEl.textContent = `${speakingMin} min`;
+  }
+
+  input.addEventListener('input', update);
+
+  document.getElementById('wc-copy')!.addEventListener('click', () => {
+    navigator.clipboard.writeText(input.value);
+  });
+
+  document.getElementById('wc-clear')!.addEventListener('click', () => {
+    input.value = '';
+    update();
+  });
+</script>
