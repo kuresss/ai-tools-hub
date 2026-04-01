@@ -1,0 +1,212 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Diff Checker"
+  description="Compare two texts and find differences instantly. Free online diff checker with line-by-line comparison. Added lines in green, removed lines in red."
+>
+  <div id="diff-checker-app">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Original Text</label>
+        <textarea
+          id="dc-left"
+          rows="12"
+          placeholder="Paste original text here..."
+          class="w-full border border-gray-300 rounded-lg p-4 text-sm font-mono resize-y focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+        ></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Modified Text</label>
+        <textarea
+          id="dc-right"
+          rows="12"
+          placeholder="Paste modified text here..."
+          class="w-full border border-gray-300 rounded-lg p-4 text-sm font-mono resize-y focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="mt-4 flex gap-3 items-center">
+      <button id="dc-compare" class="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors font-medium">
+        Compare
+      </button>
+      <button id="dc-clear" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-300 transition-colors">
+        Clear
+      </button>
+      <label class="flex items-center gap-2 ml-4 cursor-pointer">
+        <input type="checkbox" id="dc-ignore-whitespace" class="w-4 h-4 text-indigo-600" />
+        <span class="text-sm text-gray-600">Ignore leading/trailing whitespace</span>
+      </label>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="dc-total" class="text-2xl font-bold text-indigo-600">0</div>
+        <div class="text-sm text-gray-500">Total Lines</div>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="dc-added" class="text-2xl font-bold text-green-600">0</div>
+        <div class="text-sm text-gray-500">Added</div>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="dc-removed" class="text-2xl font-bold text-red-600">0</div>
+        <div class="text-sm text-gray-500">Removed</div>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="dc-unchanged" class="text-2xl font-bold text-gray-600">0</div>
+        <div class="text-sm text-gray-500">Unchanged</div>
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Diff Result</label>
+      <div
+        id="dc-result"
+        class="w-full border border-gray-300 rounded-lg bg-white font-mono text-sm overflow-x-auto max-h-[500px] overflow-y-auto"
+      >
+        <div class="p-4 text-gray-400">Click "Compare" to see the diff result.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO Content -->
+  <div class="mt-12 prose prose-sm max-w-none">
+    <h2>Free Online Diff Checker</h2>
+    <p>Compare two texts and instantly see the differences. Our diff checker tool highlights added lines in green and removed lines in red, making it easy to spot changes between two versions of text. Perfect for code reviews, document comparison, and tracking changes.</p>
+
+    <h3>Features</h3>
+    <ul>
+      <li><strong>Line-by-line comparison</strong> - See exactly which lines were added, removed, or unchanged</li>
+      <li><strong>Color-coded results</strong> - Green for additions, red for deletions</li>
+      <li><strong>Whitespace handling</strong> - Option to ignore leading and trailing whitespace</li>
+      <li><strong>Statistics</strong> - View counts of added, removed, and unchanged lines</li>
+      <li><strong>No sign-up required</strong> - Runs entirely in your browser, your data stays private</li>
+    </ul>
+
+    <h3>Text Compare - How to Use</h3>
+    <p>Paste the original text in the left pane and the modified text in the right pane, then click "Compare". The diff result will show each line with color coding: green background for added lines, red background for removed lines, and white for unchanged lines.</p>
+  </div>
+</ToolLayout>
+
+<script>
+  const leftInput = document.getElementById('dc-left') as HTMLTextAreaElement;
+  const rightInput = document.getElementById('dc-right') as HTMLTextAreaElement;
+  const resultEl = document.getElementById('dc-result')!;
+  const totalEl = document.getElementById('dc-total')!;
+  const addedEl = document.getElementById('dc-added')!;
+  const removedEl = document.getElementById('dc-removed')!;
+  const unchangedEl = document.getElementById('dc-unchanged')!;
+  const ignoreWsCheckbox = document.getElementById('dc-ignore-whitespace') as HTMLInputElement;
+
+  function escapeHtml(str: string): string {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // Simple LCS-based diff algorithm
+  function computeDiff(a: string[], b: string[], ignoreWs: boolean): Array<{type: 'equal' | 'add' | 'remove', text: string}> {
+    const normalize = (s: string) => ignoreWs ? s.trim() : s;
+    const n = a.length;
+    const m = b.length;
+
+    // Build LCS table
+    const dp: number[][] = Array.from({length: n + 1}, () => new Array(m + 1).fill(0));
+    for (let i = 1; i <= n; i++) {
+      for (let j = 1; j <= m; j++) {
+        if (normalize(a[i - 1]) === normalize(b[j - 1])) {
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+        } else {
+          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+        }
+      }
+    }
+
+    // Backtrack to get diff
+    const result: Array<{type: 'equal' | 'add' | 'remove', text: string}> = [];
+    let i = n, j = m;
+    const stack: Array<{type: 'equal' | 'add' | 'remove', text: string}> = [];
+
+    while (i > 0 || j > 0) {
+      if (i > 0 && j > 0 && normalize(a[i - 1]) === normalize(b[j - 1])) {
+        stack.push({type: 'equal', text: a[i - 1]});
+        i--; j--;
+      } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+        stack.push({type: 'add', text: b[j - 1]});
+        j--;
+      } else {
+        stack.push({type: 'remove', text: a[i - 1]});
+        i--;
+      }
+    }
+
+    stack.reverse();
+    return stack;
+  }
+
+  function compare() {
+    const leftLines = leftInput.value.split('\n');
+    const rightLines = rightInput.value.split('\n');
+    const ignoreWs = ignoreWsCheckbox.checked;
+
+    const diff = computeDiff(leftLines, rightLines, ignoreWs);
+
+    let addedCount = 0, removedCount = 0, unchangedCount = 0;
+    let html = '';
+    let lineNum = 0;
+
+    diff.forEach(d => {
+      lineNum++;
+      const escapedText = escapeHtml(d.text) || '&nbsp;';
+      switch (d.type) {
+        case 'add':
+          addedCount++;
+          html += `<div class="flex bg-green-50 border-b border-green-100">
+            <span class="w-12 flex-shrink-0 text-right pr-2 text-green-500 select-none border-r border-green-200 bg-green-100 py-0.5 text-xs leading-5">+</span>
+            <span class="px-3 py-0.5 text-green-800 leading-5 whitespace-pre">${escapedText}</span>
+          </div>`;
+          break;
+        case 'remove':
+          removedCount++;
+          html += `<div class="flex bg-red-50 border-b border-red-100">
+            <span class="w-12 flex-shrink-0 text-right pr-2 text-red-500 select-none border-r border-red-200 bg-red-100 py-0.5 text-xs leading-5">-</span>
+            <span class="px-3 py-0.5 text-red-800 leading-5 whitespace-pre">${escapedText}</span>
+          </div>`;
+          break;
+        case 'equal':
+          unchangedCount++;
+          html += `<div class="flex border-b border-gray-100">
+            <span class="w-12 flex-shrink-0 text-right pr-2 text-gray-400 select-none border-r border-gray-200 bg-gray-50 py-0.5 text-xs leading-5">${lineNum}</span>
+            <span class="px-3 py-0.5 text-gray-700 leading-5 whitespace-pre">${escapedText}</span>
+          </div>`;
+          break;
+      }
+    });
+
+    const total = addedCount + removedCount + unchangedCount;
+    totalEl.textContent = String(total);
+    addedEl.textContent = String(addedCount);
+    removedEl.textContent = String(removedCount);
+    unchangedEl.textContent = String(unchangedCount);
+
+    if (total === 0) {
+      resultEl.innerHTML = '<div class="p-4 text-gray-400">Both texts are empty.</div>';
+    } else if (addedCount === 0 && removedCount === 0) {
+      resultEl.innerHTML = '<div class="p-4 text-green-600 font-medium">Both texts are identical.</div>';
+    } else {
+      resultEl.innerHTML = html;
+    }
+  }
+
+  document.getElementById('dc-compare')!.addEventListener('click', compare);
+
+  document.getElementById('dc-clear')!.addEventListener('click', () => {
+    leftInput.value = '';
+    rightInput.value = '';
+    totalEl.textContent = '0';
+    addedEl.textContent = '0';
+    removedEl.textContent = '0';
+    unchangedEl.textContent = '0';
+    resultEl.innerHTML = '<div class="p-4 text-gray-400">Click "Compare" to see the diff result.</div>';
+  });
+</script>

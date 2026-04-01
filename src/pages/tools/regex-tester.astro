@@ -1,0 +1,230 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Regex Tester"
+  description="Test regular expressions online with real-time matching, highlighting, and group capture. Free regex tester tool."
+>
+  <div id="regex-tester-app">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Pattern</label>
+        <input
+          id="rt-pattern"
+          type="text"
+          placeholder="Enter regex pattern (e.g. \d+)"
+          class="w-full border border-gray-300 rounded-lg p-3 text-base font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Flags</label>
+        <div class="flex gap-4 items-center h-[46px]">
+          <label class="flex items-center gap-1 cursor-pointer">
+            <input type="checkbox" id="rt-flag-g" checked class="w-4 h-4 text-indigo-600" />
+            <span class="text-sm font-mono">g</span>
+            <span class="text-xs text-gray-400">(global)</span>
+          </label>
+          <label class="flex items-center gap-1 cursor-pointer">
+            <input type="checkbox" id="rt-flag-i" class="w-4 h-4 text-indigo-600" />
+            <span class="text-sm font-mono">i</span>
+            <span class="text-xs text-gray-400">(case-insensitive)</span>
+          </label>
+          <label class="flex items-center gap-1 cursor-pointer">
+            <input type="checkbox" id="rt-flag-m" class="w-4 h-4 text-indigo-600" />
+            <span class="text-sm font-mono">m</span>
+            <span class="text-xs text-gray-400">(multiline)</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Test String</label>
+      <textarea
+        id="rt-input"
+        rows="6"
+        placeholder="Enter test string here..."
+        class="w-full border border-gray-300 rounded-lg p-4 text-base font-mono resize-y focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+      ></textarea>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="rt-match-count" class="text-2xl font-bold text-indigo-600">0</div>
+        <div class="text-sm text-gray-500">Matches</div>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="rt-group-count" class="text-2xl font-bold text-indigo-600">0</div>
+        <div class="text-sm text-gray-500">Groups</div>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="rt-status" class="text-2xl font-bold text-green-600">--</div>
+        <div class="text-sm text-gray-500">Status</div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Highlighted Result</label>
+      <div
+        id="rt-result"
+        class="w-full border border-gray-300 rounded-lg p-4 text-base font-mono bg-white min-h-[100px] whitespace-pre-wrap break-all"
+      ></div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Match Details</label>
+      <div
+        id="rt-details"
+        class="w-full border border-gray-300 rounded-lg p-4 text-sm font-mono bg-gray-50 min-h-[60px] max-h-[300px] overflow-y-auto"
+      >
+        <span class="text-gray-400">No matches yet.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO Content -->
+  <div class="mt-12 prose prose-sm max-w-none">
+    <h2>Free Online Regex Tester</h2>
+    <p>Test your regular expressions online with real-time matching and highlighting. Our regex tester tool helps you build, debug, and validate regex patterns instantly. Perfect for developers, data engineers, and anyone working with text processing.</p>
+
+    <h3>Features</h3>
+    <ul>
+      <li><strong>Real-time matching</strong> - See matches highlighted as you type your pattern</li>
+      <li><strong>Flag support</strong> - Toggle global (g), case-insensitive (i), and multiline (m) flags</li>
+      <li><strong>Group capture</strong> - View captured groups for each match</li>
+      <li><strong>Match details</strong> - See full match information including index and groups</li>
+      <li><strong>No sign-up required</strong> - Runs entirely in your browser</li>
+    </ul>
+
+    <h3>Regular Expression Tester - How to Use</h3>
+    <p>Enter your regex pattern in the pattern field, select the desired flags, and type or paste your test string. The tool will instantly highlight all matches and display detailed match information including captured groups.</p>
+  </div>
+</ToolLayout>
+
+<script>
+  const patternInput = document.getElementById('rt-pattern') as HTMLInputElement;
+  const testInput = document.getElementById('rt-input') as HTMLTextAreaElement;
+  const flagG = document.getElementById('rt-flag-g') as HTMLInputElement;
+  const flagI = document.getElementById('rt-flag-i') as HTMLInputElement;
+  const flagM = document.getElementById('rt-flag-m') as HTMLInputElement;
+  const matchCountEl = document.getElementById('rt-match-count')!;
+  const groupCountEl = document.getElementById('rt-group-count')!;
+  const statusEl = document.getElementById('rt-status')!;
+  const resultEl = document.getElementById('rt-result')!;
+  const detailsEl = document.getElementById('rt-details')!;
+
+  function escapeHtml(str: string): string {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function update() {
+    const pattern = patternInput.value;
+    const text = testInput.value;
+
+    if (!pattern) {
+      matchCountEl.textContent = '0';
+      groupCountEl.textContent = '0';
+      statusEl.textContent = '--';
+      statusEl.className = 'text-2xl font-bold text-gray-400';
+      resultEl.innerHTML = escapeHtml(text) || '<span class="text-gray-400">Results will appear here...</span>';
+      detailsEl.innerHTML = '<span class="text-gray-400">No matches yet.</span>';
+      return;
+    }
+
+    let flags = '';
+    if (flagG.checked) flags += 'g';
+    if (flagI.checked) flags += 'i';
+    if (flagM.checked) flags += 'm';
+
+    let regex: RegExp;
+    try {
+      regex = new RegExp(pattern, flags);
+    } catch (e: any) {
+      statusEl.textContent = 'Error';
+      statusEl.className = 'text-2xl font-bold text-red-600';
+      matchCountEl.textContent = '0';
+      groupCountEl.textContent = '0';
+      resultEl.innerHTML = escapeHtml(text);
+      detailsEl.innerHTML = `<span class="text-red-600">${escapeHtml(e.message)}</span>`;
+      return;
+    }
+
+    if (!text) {
+      statusEl.textContent = '--';
+      statusEl.className = 'text-2xl font-bold text-gray-400';
+      matchCountEl.textContent = '0';
+      groupCountEl.textContent = '0';
+      resultEl.innerHTML = '';
+      detailsEl.innerHTML = '<span class="text-gray-400">Enter a test string.</span>';
+      return;
+    }
+
+    const matches: RegExpExecArray[] = [];
+    let m: RegExpExecArray | null;
+
+    if (flags.includes('g')) {
+      while ((m = regex.exec(text)) !== null) {
+        matches.push(m);
+        if (m[0].length === 0) regex.lastIndex++;
+      }
+    } else {
+      m = regex.exec(text);
+      if (m) matches.push(m);
+    }
+
+    matchCountEl.textContent = String(matches.length);
+
+    let maxGroups = 0;
+    matches.forEach(m => {
+      const groups = m.length - 1;
+      if (groups > maxGroups) maxGroups = groups;
+    });
+    groupCountEl.textContent = String(maxGroups);
+
+    if (matches.length > 0) {
+      statusEl.textContent = 'Match';
+      statusEl.className = 'text-2xl font-bold text-green-600';
+    } else {
+      statusEl.textContent = 'No Match';
+      statusEl.className = 'text-2xl font-bold text-red-600';
+    }
+
+    // Build highlighted result
+    let html = '';
+    let lastIndex = 0;
+    const colors = ['bg-yellow-200', 'bg-green-200', 'bg-blue-200', 'bg-pink-200', 'bg-purple-200'];
+
+    matches.forEach((m, i) => {
+      const start = m.index;
+      const end = start + m[0].length;
+      html += escapeHtml(text.slice(lastIndex, start));
+      html += `<mark class="${colors[i % colors.length]} rounded px-0.5">${escapeHtml(m[0])}</mark>`;
+      lastIndex = end;
+    });
+    html += escapeHtml(text.slice(lastIndex));
+    resultEl.innerHTML = html;
+
+    // Build match details
+    if (matches.length === 0) {
+      detailsEl.innerHTML = '<span class="text-gray-400">No matches found.</span>';
+    } else {
+      let detailHtml = '';
+      matches.forEach((m, i) => {
+        detailHtml += `<div class="mb-2 pb-2 border-b border-gray-200 last:border-0">`;
+        detailHtml += `<strong>Match ${i + 1}:</strong> "${escapeHtml(m[0])}" <span class="text-gray-400">(index ${m.index})</span>`;
+        for (let g = 1; g < m.length; g++) {
+          detailHtml += `<br/>&nbsp;&nbsp;Group ${g}: "${escapeHtml(m[g] ?? '')}"`;
+        }
+        detailHtml += `</div>`;
+      });
+      detailsEl.innerHTML = detailHtml;
+    }
+  }
+
+  patternInput.addEventListener('input', update);
+  testInput.addEventListener('input', update);
+  flagG.addEventListener('change', update);
+  flagI.addEventListener('change', update);
+  flagM.addEventListener('change', update);
+</script>
