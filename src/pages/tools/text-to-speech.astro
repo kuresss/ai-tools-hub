@@ -1,0 +1,174 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Text to Speech"
+  description="Convert text to speech online for free using your browser's built-in speech synthesis. Choose from multiple voices, adjust speed and pitch."
+  isAI={true}
+>
+  <div id="tts-app">
+    <div class="space-y-4">
+      <div>
+        <label for="tts-input" class="block text-sm font-medium text-gray-700 mb-1">Enter Text</label>
+        <textarea
+          id="tts-input"
+          rows="6"
+          placeholder="Type or paste the text you want to hear spoken aloud..."
+          class="w-full border border-gray-300 rounded-lg p-4 text-base resize-y focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+        ></textarea>
+        <div class="text-right text-xs text-gray-400 mt-1">
+          <span id="tts-char-count">0</span> characters
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label for="tts-voice" class="block text-sm font-medium text-gray-700 mb-1">Voice</label>
+          <select id="tts-voice" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option>Loading voices...</option>
+          </select>
+        </div>
+        <div>
+          <label for="tts-rate" class="block text-sm font-medium text-gray-700 mb-1">
+            Speed: <span id="tts-rate-val">1.0</span>x
+          </label>
+          <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1" class="w-full accent-indigo-600" />
+        </div>
+        <div>
+          <label for="tts-pitch" class="block text-sm font-medium text-gray-700 mb-1">
+            Pitch: <span id="tts-pitch-val">1.0</span>
+          </label>
+          <input type="range" id="tts-pitch" min="0" max="2" step="0.1" value="1" class="w-full accent-indigo-600" />
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <button id="tts-play" class="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+          Play
+        </button>
+        <button id="tts-pause" class="bg-yellow-500 text-white px-6 py-2 rounded-lg text-sm hover:bg-yellow-600 transition-colors flex items-center gap-2" disabled>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zM12.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z"/></svg>
+          Pause
+        </button>
+        <button id="tts-stop" class="bg-red-500 text-white px-6 py-2 rounded-lg text-sm hover:bg-red-600 transition-colors flex items-center gap-2" disabled>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M5.25 3A2.25 2.25 0 003 5.25v9.5A2.25 2.25 0 005.25 17h9.5A2.25 2.25 0 0017 14.75v-9.5A2.25 2.25 0 0014.75 3h-9.5z"/></svg>
+          Stop
+        </button>
+      </div>
+
+      <div id="tts-status" class="text-sm text-gray-500"></div>
+    </div>
+  </div>
+
+  <!-- SEO Content -->
+  <div class="mt-12 prose prose-sm max-w-none">
+    <h2>Free Online Text to Speech (TTS)</h2>
+    <p>Convert any text to natural-sounding speech directly in your browser. Our free TTS online tool uses the Web Speech API to read text aloud with customizable voice, speed, and pitch settings. No downloads or sign-ups required.</p>
+
+    <h3>Features</h3>
+    <ul>
+      <li><strong>Multiple voices</strong> - Choose from all voices available in your browser</li>
+      <li><strong>Speed control</strong> - Adjust speaking rate from 0.5x to 2x</li>
+      <li><strong>Pitch control</strong> - Fine-tune the voice pitch</li>
+      <li><strong>Play/Pause/Stop</strong> - Full playback control</li>
+      <li><strong>Privacy-first</strong> - All processing happens in your browser</li>
+    </ul>
+
+    <h3>Use Cases</h3>
+    <ul>
+      <li>Proofreading documents by listening</li>
+      <li>Language learning and pronunciation practice</li>
+      <li>Accessibility for visually impaired users</li>
+      <li>Content review before publishing</li>
+    </ul>
+  </div>
+</ToolLayout>
+
+<script>
+  const input = document.getElementById('tts-input') as HTMLTextAreaElement;
+  const voiceSelect = document.getElementById('tts-voice') as HTMLSelectElement;
+  const rateSlider = document.getElementById('tts-rate') as HTMLInputElement;
+  const pitchSlider = document.getElementById('tts-pitch') as HTMLInputElement;
+  const rateVal = document.getElementById('tts-rate-val')!;
+  const pitchVal = document.getElementById('tts-pitch-val')!;
+  const playBtn = document.getElementById('tts-play')!;
+  const pauseBtn = document.getElementById('tts-pause') as HTMLButtonElement;
+  const stopBtn = document.getElementById('tts-stop') as HTMLButtonElement;
+  const statusEl = document.getElementById('tts-status')!;
+  const charCount = document.getElementById('tts-char-count')!;
+
+  let voices: SpeechSynthesisVoice[] = [];
+
+  function loadVoices() {
+    voices = speechSynthesis.getVoices();
+    if (voices.length === 0) return;
+
+    voiceSelect.innerHTML = '';
+    voices.forEach((voice, i) => {
+      const opt = document.createElement('option');
+      opt.value = String(i);
+      opt.textContent = `${voice.name} (${voice.lang})${voice.default ? ' - Default' : ''}`;
+      if (voice.default) opt.selected = true;
+      voiceSelect.appendChild(opt);
+    });
+  }
+
+  speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+
+  rateSlider.addEventListener('input', () => { rateVal.textContent = parseFloat(rateSlider.value).toFixed(1); });
+  pitchSlider.addEventListener('input', () => { pitchVal.textContent = parseFloat(pitchSlider.value).toFixed(1); });
+  input.addEventListener('input', () => { charCount.textContent = String(input.value.length); });
+
+  playBtn.addEventListener('click', () => {
+    const text = input.value.trim();
+    if (!text) { statusEl.textContent = 'Please enter some text.'; return; }
+
+    if (speechSynthesis.paused) {
+      speechSynthesis.resume();
+      statusEl.textContent = 'Resumed...';
+      return;
+    }
+
+    speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    if (voices.length > 0) {
+      utterance.voice = voices[parseInt(voiceSelect.value)];
+    }
+    utterance.rate = parseFloat(rateSlider.value);
+    utterance.pitch = parseFloat(pitchSlider.value);
+
+    utterance.onstart = () => {
+      statusEl.textContent = 'Speaking...';
+      pauseBtn.disabled = false;
+      stopBtn.disabled = false;
+    };
+    utterance.onend = () => {
+      statusEl.textContent = 'Finished.';
+      pauseBtn.disabled = true;
+      stopBtn.disabled = true;
+    };
+    utterance.onerror = (e) => {
+      statusEl.textContent = `Error: ${e.error}`;
+    };
+
+    speechSynthesis.speak(utterance);
+  });
+
+  pauseBtn.addEventListener('click', () => {
+    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+      speechSynthesis.pause();
+      statusEl.textContent = 'Paused.';
+    }
+  });
+
+  stopBtn.addEventListener('click', () => {
+    speechSynthesis.cancel();
+    statusEl.textContent = 'Stopped.';
+    pauseBtn.disabled = true;
+    stopBtn.disabled = true;
+  });
+</script>

@@ -1,0 +1,204 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Unix Timestamp Converter"
+  description="Convert Unix timestamps to human-readable dates and vice versa. Real-time clock, millisecond/second toggle, UTC and local timezone support."
+>
+  <div id="ts-app">
+    <div class="space-y-6">
+      <!-- Current timestamp -->
+      <div class="bg-indigo-50 rounded-lg p-6 text-center">
+        <div class="text-sm text-indigo-600 font-medium mb-1">Current Unix Timestamp</div>
+        <div id="ts-current" class="text-3xl font-bold text-indigo-700 font-mono">-</div>
+        <div id="ts-current-ms" class="text-sm text-indigo-500 mt-1 font-mono">-</div>
+        <div id="ts-current-date" class="text-sm text-gray-600 mt-2">-</div>
+      </div>
+
+      <!-- Unit toggle -->
+      <div class="flex justify-center gap-2">
+        <button id="ts-unit-sec" class="px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white">Seconds</button>
+        <button id="ts-unit-ms" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">Milliseconds</button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Timestamp to Date -->
+        <div class="bg-gray-50 rounded-lg p-5">
+          <h3 class="text-base font-semibold text-gray-800 mb-3">Timestamp to Date</h3>
+          <div class="space-y-3">
+            <input
+              type="text"
+              id="ts-input"
+              placeholder="Enter Unix timestamp..."
+              class="w-full border border-gray-300 rounded-lg p-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <button id="ts-convert" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors">
+              Convert
+            </button>
+            <div id="ts-result" class="space-y-2 text-sm" style="display:none;">
+              <div class="flex justify-between">
+                <span class="text-gray-500">UTC:</span>
+                <span id="ts-utc" class="font-mono text-gray-800">-</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">Local:</span>
+                <span id="ts-local" class="font-mono text-gray-800">-</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">ISO 8601:</span>
+                <span id="ts-iso" class="font-mono text-gray-800 text-xs">-</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">Relative:</span>
+                <span id="ts-relative" class="text-gray-800">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date to Timestamp -->
+        <div class="bg-gray-50 rounded-lg p-5">
+          <h3 class="text-base font-semibold text-gray-800 mb-3">Date to Timestamp</h3>
+          <div class="space-y-3">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="text-xs text-gray-500">Date</label>
+                <input type="date" id="ts-date" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
+              <div>
+                <label class="text-xs text-gray-500">Time</label>
+                <input type="time" id="ts-time" step="1" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
+            </div>
+            <button id="ts-to-timestamp" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors">
+              Convert to Timestamp
+            </button>
+            <div id="ts-timestamp-result" class="space-y-2 text-sm" style="display:none;">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-500">Timestamp:</span>
+                <div class="flex items-center gap-2">
+                  <span id="ts-output" class="font-mono text-gray-800 font-bold">-</span>
+                  <button id="ts-copy" class="text-indigo-600 hover:text-indigo-700 text-xs">Copy</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO Content -->
+  <div class="mt-12 prose prose-sm max-w-none">
+    <h2>Free Unix Timestamp Converter</h2>
+    <p>Convert Unix timestamps (epoch time) to human-readable dates and vice versa. Our free epoch converter shows the current timestamp in real-time, supports both seconds and milliseconds, and displays results in UTC and your local timezone.</p>
+
+    <h3>Features</h3>
+    <ul>
+      <li><strong>Real-time clock</strong> - See the current Unix timestamp updating live</li>
+      <li><strong>Bidirectional conversion</strong> - Convert timestamps to dates and dates to timestamps</li>
+      <li><strong>Millisecond support</strong> - Toggle between seconds and milliseconds</li>
+      <li><strong>Timezone display</strong> - View results in both UTC and local time</li>
+      <li><strong>ISO 8601 format</strong> - Get the standardized date format</li>
+    </ul>
+
+    <h3>What is a Unix Timestamp?</h3>
+    <p>A Unix timestamp (also known as epoch time or POSIX time) is the number of seconds that have elapsed since January 1, 1970 (midnight UTC). It is widely used in programming and databases to represent dates and times in a simple numeric format.</p>
+  </div>
+</ToolLayout>
+
+<script>
+  const currentEl = document.getElementById('ts-current')!;
+  const currentMsEl = document.getElementById('ts-current-ms')!;
+  const currentDateEl = document.getElementById('ts-current-date')!;
+  const unitSecBtn = document.getElementById('ts-unit-sec')!;
+  const unitMsBtn = document.getElementById('ts-unit-ms')!;
+  const tsInput = document.getElementById('ts-input') as HTMLInputElement;
+  const convertBtn = document.getElementById('ts-convert')!;
+  const resultDiv = document.getElementById('ts-result')!;
+  const utcEl = document.getElementById('ts-utc')!;
+  const localEl = document.getElementById('ts-local')!;
+  const isoEl = document.getElementById('ts-iso')!;
+  const relativeEl = document.getElementById('ts-relative')!;
+  const dateInput = document.getElementById('ts-date') as HTMLInputElement;
+  const timeInput = document.getElementById('ts-time') as HTMLInputElement;
+  const toTimestampBtn = document.getElementById('ts-to-timestamp')!;
+  const timestampResultDiv = document.getElementById('ts-timestamp-result')!;
+  const outputEl = document.getElementById('ts-output')!;
+  const copyBtn = document.getElementById('ts-copy')!;
+
+  let useMs = false;
+
+  // Set default date/time
+  const now = new Date();
+  dateInput.value = now.toISOString().slice(0, 10);
+  timeInput.value = now.toTimeString().slice(0, 8);
+
+  // Update current timestamp
+  function updateCurrent() {
+    const ms = Date.now();
+    currentEl.textContent = String(Math.floor(ms / 1000));
+    currentMsEl.textContent = `(${ms} ms)`;
+    currentDateEl.textContent = new Date(ms).toUTCString();
+  }
+  setInterval(updateCurrent, 1000);
+  updateCurrent();
+
+  // Unit toggle
+  unitSecBtn.addEventListener('click', () => {
+    useMs = false;
+    unitSecBtn.className = 'px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white';
+    unitMsBtn.className = 'px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300';
+  });
+  unitMsBtn.addEventListener('click', () => {
+    useMs = true;
+    unitMsBtn.className = 'px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white';
+    unitSecBtn.className = 'px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300';
+  });
+
+  function getRelativeTime(date: Date): string {
+    const diff = Date.now() - date.getTime();
+    const absDiff = Math.abs(diff);
+    const past = diff > 0;
+    const prefix = past ? '' : 'in ';
+    const suffix = past ? ' ago' : '';
+
+    if (absDiff < 60000) return `${prefix}${Math.floor(absDiff / 1000)} seconds${suffix}`;
+    if (absDiff < 3600000) return `${prefix}${Math.floor(absDiff / 60000)} minutes${suffix}`;
+    if (absDiff < 86400000) return `${prefix}${Math.floor(absDiff / 3600000)} hours${suffix}`;
+    if (absDiff < 2592000000) return `${prefix}${Math.floor(absDiff / 86400000)} days${suffix}`;
+    return `${prefix}${Math.floor(absDiff / 2592000000)} months${suffix}`;
+  }
+
+  // Timestamp to date
+  convertBtn.addEventListener('click', () => {
+    const val = parseInt(tsInput.value.trim());
+    if (isNaN(val)) return;
+    const ms = useMs ? val : val * 1000;
+    const date = new Date(ms);
+
+    utcEl.textContent = date.toUTCString();
+    localEl.textContent = date.toLocaleString();
+    isoEl.textContent = date.toISOString();
+    relativeEl.textContent = getRelativeTime(date);
+    resultDiv.style.display = 'block';
+  });
+
+  // Date to timestamp
+  toTimestampBtn.addEventListener('click', () => {
+    const d = dateInput.value;
+    const t = timeInput.value || '00:00:00';
+    if (!d) return;
+    const date = new Date(`${d}T${t}`);
+    const ts = useMs ? date.getTime() : Math.floor(date.getTime() / 1000);
+    outputEl.textContent = String(ts);
+    timestampResultDiv.style.display = 'block';
+  });
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(outputEl.textContent || '');
+    copyBtn.textContent = 'Copied!';
+    setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1500);
+  });
+</script>

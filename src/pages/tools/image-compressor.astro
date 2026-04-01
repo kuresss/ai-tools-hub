@@ -1,0 +1,217 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Image Compressor"
+  description="Compress images online for free without uploading to any server. Reduce file size while maintaining quality. Supports JPEG, PNG, and WebP output."
+>
+  <div id="ic-app">
+    <div class="space-y-4">
+      <!-- Drop zone -->
+      <div
+        id="ic-dropzone"
+        class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-indigo-400 transition-colors"
+      >
+        <svg class="mx-auto w-12 h-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+        </svg>
+        <p class="text-gray-600">Drag & drop an image here, or <span class="text-indigo-600 font-medium">click to select</span></p>
+        <p class="text-xs text-gray-400 mt-1">Supports JPEG, PNG, WebP, GIF</p>
+        <input type="file" id="ic-file" accept="image/*" class="hidden" />
+      </div>
+
+      <!-- Controls -->
+      <div id="ic-controls" class="space-y-4" style="display:none;">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="ic-quality" class="block text-sm font-medium text-gray-700 mb-1">
+              Quality: <span id="ic-quality-val">80</span>%
+            </label>
+            <input type="range" id="ic-quality" min="1" max="100" value="80" class="w-full accent-indigo-600" />
+          </div>
+          <div>
+            <label for="ic-format" class="block text-sm font-medium text-gray-700 mb-1">Output Format</label>
+            <select id="ic-format" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/png">PNG</option>
+              <option value="image/webp" selected>WebP</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="ic-compress" class="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors">
+          Compress Image
+        </button>
+
+        <!-- Size comparison -->
+        <div id="ic-info" class="grid grid-cols-2 gap-4" style="display:none;">
+          <div class="bg-gray-50 rounded-lg p-4 text-center">
+            <div class="text-sm text-gray-500">Original Size</div>
+            <div id="ic-original-size" class="text-xl font-bold text-gray-800">-</div>
+          </div>
+          <div class="bg-green-50 rounded-lg p-4 text-center">
+            <div class="text-sm text-gray-500">Compressed Size</div>
+            <div id="ic-compressed-size" class="text-xl font-bold text-green-600">-</div>
+            <div id="ic-savings" class="text-xs text-green-500 mt-1"></div>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div id="ic-preview-container" class="grid grid-cols-1 md:grid-cols-2 gap-4" style="display:none;">
+          <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">Original</p>
+            <img id="ic-preview-original" class="w-full rounded-lg border border-gray-200" alt="Original" />
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">Compressed</p>
+            <img id="ic-preview-compressed" class="w-full rounded-lg border border-gray-200" alt="Compressed" />
+          </div>
+        </div>
+
+        <button id="ic-download" class="bg-green-600 text-white px-6 py-2 rounded-lg text-sm hover:bg-green-700 transition-colors" style="display:none;">
+          Download Compressed Image
+        </button>
+      </div>
+
+      <div class="bg-blue-50 rounded-lg p-3 flex items-center gap-2 text-sm text-blue-700">
+        <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+        Your images are never uploaded to any server. All compression happens locally in your browser.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO Content -->
+  <div class="mt-12 prose prose-sm max-w-none">
+    <h2>Free Online Image Compressor</h2>
+    <p>Compress images online without losing quality. Our free image compressor tool works entirely in your browser - your images are never uploaded to any server, ensuring complete privacy. Reduce file sizes for faster websites, emails, and social media.</p>
+
+    <h3>Features</h3>
+    <ul>
+      <li><strong>Client-side processing</strong> - Images never leave your device</li>
+      <li><strong>Quality control</strong> - Adjust compression quality from 1% to 100%</li>
+      <li><strong>Multiple formats</strong> - Output as JPEG, PNG, or WebP</li>
+      <li><strong>Before/after comparison</strong> - See the size reduction instantly</li>
+      <li><strong>Drag & drop</strong> - Easy file upload interface</li>
+    </ul>
+
+    <h3>Why Compress Images?</h3>
+    <ul>
+      <li>Faster website loading speeds</li>
+      <li>Reduced bandwidth usage</li>
+      <li>Smaller email attachments</li>
+      <li>Meet social media file size limits</li>
+    </ul>
+  </div>
+</ToolLayout>
+
+<script>
+  const dropzone = document.getElementById('ic-dropzone')!;
+  const fileInput = document.getElementById('ic-file') as HTMLInputElement;
+  const controls = document.getElementById('ic-controls')!;
+  const qualitySlider = document.getElementById('ic-quality') as HTMLInputElement;
+  const qualityVal = document.getElementById('ic-quality-val')!;
+  const formatSelect = document.getElementById('ic-format') as HTMLSelectElement;
+  const compressBtn = document.getElementById('ic-compress')!;
+  const infoDiv = document.getElementById('ic-info')!;
+  const originalSizeEl = document.getElementById('ic-original-size')!;
+  const compressedSizeEl = document.getElementById('ic-compressed-size')!;
+  const savingsEl = document.getElementById('ic-savings')!;
+  const previewContainer = document.getElementById('ic-preview-container')!;
+  const previewOriginal = document.getElementById('ic-preview-original') as HTMLImageElement;
+  const previewCompressed = document.getElementById('ic-preview-compressed') as HTMLImageElement;
+  const downloadBtn = document.getElementById('ic-download')!;
+
+  let originalFile: File | null = null;
+  let compressedBlob: Blob | null = null;
+
+  function formatBytes(bytes: number): string {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  }
+
+  dropzone.addEventListener('click', () => fileInput.click());
+
+  dropzone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropzone.classList.add('border-indigo-400', 'bg-indigo-50');
+  });
+
+  dropzone.addEventListener('dragleave', () => {
+    dropzone.classList.remove('border-indigo-400', 'bg-indigo-50');
+  });
+
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('border-indigo-400', 'bg-indigo-50');
+    const files = (e as DragEvent).dataTransfer?.files;
+    if (files && files[0]) handleFile(files[0]);
+  });
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files && fileInput.files[0]) handleFile(fileInput.files[0]);
+  });
+
+  function handleFile(file: File) {
+    if (!file.type.startsWith('image/')) return;
+    originalFile = file;
+    controls.style.display = 'block';
+
+    const url = URL.createObjectURL(file);
+    previewOriginal.src = url;
+    previewContainer.style.display = 'grid';
+
+    // Reset
+    infoDiv.style.display = 'none';
+    downloadBtn.style.display = 'none';
+    previewCompressed.src = '';
+  }
+
+  qualitySlider.addEventListener('input', () => {
+    qualityVal.textContent = qualitySlider.value;
+  });
+
+  compressBtn.addEventListener('click', () => {
+    if (!originalFile) return;
+
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d')!;
+      ctx.drawImage(img, 0, 0);
+
+      const quality = parseInt(qualitySlider.value) / 100;
+      const format = formatSelect.value;
+
+      canvas.toBlob((blob) => {
+        if (!blob || !originalFile) return;
+        compressedBlob = blob;
+
+        originalSizeEl.textContent = formatBytes(originalFile.size);
+        compressedSizeEl.textContent = formatBytes(blob.size);
+        const savings = ((1 - blob.size / originalFile.size) * 100);
+        savingsEl.textContent = savings > 0 ? `${savings.toFixed(1)}% smaller` : `${Math.abs(savings).toFixed(1)}% larger`;
+        savingsEl.className = savings > 0 ? 'text-xs text-green-500 mt-1' : 'text-xs text-red-500 mt-1';
+        infoDiv.style.display = 'grid';
+
+        const compUrl = URL.createObjectURL(blob);
+        previewCompressed.src = compUrl;
+        previewContainer.style.display = 'grid';
+        downloadBtn.style.display = 'inline-block';
+      }, format, quality);
+    };
+    img.src = URL.createObjectURL(originalFile);
+  });
+
+  downloadBtn.addEventListener('click', () => {
+    if (!compressedBlob) return;
+    const ext = formatSelect.value.split('/')[1];
+    const link = document.createElement('a');
+    link.download = `compressed.${ext}`;
+    link.href = URL.createObjectURL(compressedBlob);
+    link.click();
+  });
+</script>
