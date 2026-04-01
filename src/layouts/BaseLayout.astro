@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { config } from '../config';
 
 interface Props {
   title: string;
@@ -8,7 +9,7 @@ interface Props {
 }
 
 const { title, description, canonical } = Astro.props;
-const siteUrl = 'https://kuresss-ai-tools.netlify.app';
+const siteUrl = config.siteUrl;
 const fullTitle = `${title} | AI Tools Hub - Free Online AI Tools`;
 ---
 
@@ -34,6 +35,14 @@ const fullTitle = `${title} | AI Tools Hub - Free Online AI Tools`;
 
     <title>{fullTitle}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    {config.adsenseId && (
+      <script
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${config.adsenseId}`}
+        crossorigin="anonymous"
+      />
+    )}
 
   </head>
   <body class="min-h-screen bg-gray-50 text-gray-900">
@@ -85,11 +94,25 @@ const fullTitle = `${title} | AI Tools Hub - Free Online AI Tools`;
               <li><a href="/tools/json-formatter" class="hover:text-white">JSON Formatter</a></li>
               <li><a href="/tools/base64" class="hover:text-white">Base64 Encoder/Decoder</a></li>
               <li><a href="/tools/lorem-generator" class="hover:text-white">Lorem Ipsum Generator</a></li>
+              <li><a href="/tools/hash-generator" class="hover:text-white">Hash Generator</a></li>
+              <li><a href="/tools/url-encoder" class="hover:text-white">URL Encoder/Decoder</a></li>
             </ul>
           </div>
         </div>
         <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm">
           <p>&copy; {new Date().getFullYear()} AI Tools Hub. All tools run locally in your browser.</p>
+          <div class="mt-4 flex justify-center gap-4">
+            {config.kofiUsername && (
+              <a href={`https://ko-fi.com/${config.kofiUsername}`} target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-[#13C3FF] text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
+                Support on Ko-fi
+              </a>
+            )}
+            {config.bmcUsername && (
+              <a href={`https://buymeacoffee.com/${config.bmcUsername}`} target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-[#FFDD00] text-gray-900 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
+                Buy Me a Coffee
+              </a>
+            )}
+          </div>
           <!-- Ad placeholder -->
           <div id="ad-footer" class="mt-4"></div>
         </div>
