@@ -14,7 +14,7 @@ export const config = {
   // Ko-fi (0% platform fee)
   // 1. Create account at https://ko-fi.com
   // 2. Paste your username below
-  kofiUsername: '',
+  kofiUsername: 'kuresss',
 
   // Buy Me a Coffee (5% fee)
   // 1. Create account at https://buymeacoffee.com
