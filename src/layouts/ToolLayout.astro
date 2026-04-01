@@ -8,12 +8,28 @@ interface Props {
 }
 
 const { title, description, isAI = false } = Astro.props;
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": Astro.url.href,
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "browserRequirements": "Requires a modern web browser with JavaScript enabled"
+});
 ---
 
 <BaseLayout title={title} description={description}>
+  <script type="application/ld+json" set:html={jsonLd} />
   <div class="max-w-4xl mx-auto px-4 py-8">
     <!-- Breadcrumb -->
-    <nav class="text-sm text-gray-500 mb-6">
+    <nav class="text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
       <a href="/" class="hover:text-indigo-600">Home</a>
       <span class="mx-2">/</span>
       <span class="text-gray-900">{title}</span>

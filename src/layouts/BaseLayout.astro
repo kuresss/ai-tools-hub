@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { title, description, canonical } = Astro.props;
-const siteUrl = 'https://ai-tools-hub.netlify.app';
+const siteUrl = 'https://kuresss-ai-tools.netlify.app';
 const fullTitle = `${title} | AI Tools Hub - Free Online AI Tools`;
 ---
 
@@ -44,13 +44,14 @@ const fullTitle = `${title} | AI Tools Hub - Free Online AI Tools`;
           <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M16 14a4 4 0 0 1 4 4v2H4v-2a4 4 0 0 1 4-4h8z"/><circle cx="12" cy="6" r="1"/></svg>
           AI Tools Hub
         </a>
-        <nav class="hidden md:flex gap-6 text-sm">
+        <nav class="hidden md:flex gap-5 text-sm">
           <a href="/" class="hover:text-indigo-600">Home</a>
           <a href="/tools/summarizer" class="hover:text-indigo-600">Summarizer</a>
           <a href="/tools/sentiment" class="hover:text-indigo-600">Sentiment</a>
           <a href="/tools/translator" class="hover:text-indigo-600">Translator</a>
           <a href="/tools/word-counter" class="hover:text-indigo-600">Word Counter</a>
-          <a href="/tools/text-converter" class="hover:text-indigo-600">Text Converter</a>
+          <a href="/tools/json-formatter" class="hover:text-indigo-600">JSON</a>
+          <a href="/tools/base64" class="hover:text-indigo-600">Base64</a>
         </nav>
       </div>
     </header>
@@ -77,10 +78,13 @@ const fullTitle = `${title} | AI Tools Hub - Free Online AI Tools`;
             </ul>
           </div>
           <div>
-            <h3 class="text-white font-semibold mb-3">Text Tools</h3>
+            <h3 class="text-white font-semibold mb-3">Text & Dev Tools</h3>
             <ul class="text-sm space-y-2">
               <li><a href="/tools/word-counter" class="hover:text-white">Word & Character Counter</a></li>
               <li><a href="/tools/text-converter" class="hover:text-white">Text Case Converter</a></li>
+              <li><a href="/tools/json-formatter" class="hover:text-white">JSON Formatter</a></li>
+              <li><a href="/tools/base64" class="hover:text-white">Base64 Encoder/Decoder</a></li>
+              <li><a href="/tools/lorem-generator" class="hover:text-white">Lorem Ipsum Generator</a></li>
             </ul>
           </div>
         </div>

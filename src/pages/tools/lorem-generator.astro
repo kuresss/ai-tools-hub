@@ -1,0 +1,105 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Lorem Ipsum Generator"
+  description="Generate placeholder text for your designs and mockups. Choose paragraphs, sentences, or words. Free online Lorem Ipsum generator."
+>
+  <div id="lorem-app">
+    <div class="flex flex-wrap items-center gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+        <input id="lg-count" type="number" value="3" min="1" max="100" class="border border-gray-300 rounded-lg p-2 w-24 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+        <select id="lg-type" class="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option value="paragraphs">Paragraphs</option>
+          <option value="sentences">Sentences</option>
+          <option value="words">Words</option>
+        </select>
+      </div>
+      <div class="flex items-end gap-3">
+        <button id="lg-run" class="bg-indigo-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors">
+          Generate
+        </button>
+        <button id="lg-copy" class="bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg text-sm hover:bg-gray-300 transition-colors">
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <textarea
+      id="lg-output"
+      rows="15"
+      readonly
+      class="w-full border border-gray-300 rounded-lg p-4 text-base bg-gray-50 resize-y"
+    ></textarea>
+  </div>
+
+  <div class="mt-12 prose prose-sm max-w-none">
+    <h2>Free Lorem Ipsum Generator</h2>
+    <p>Generate placeholder text for your web designs, mockups, and documents. Choose how many paragraphs, sentences, or words you need. The classic Lorem Ipsum text has been used since the 1500s as standard dummy text.</p>
+    <h3>What is Lorem Ipsum?</h3>
+    <p>Lorem Ipsum is dummy text used in the printing and typesetting industry. It has been the industry's standard dummy text since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+  </div>
+</ToolLayout>
+
+<script>
+  const LOREM = [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "Curabitur pretium tincidunt lacus nec gravida. Nunc nec neque. Sed cursus turpis vitae tortor donec posuere vulputate arcu.",
+    "Phasellus accumsan cursus velit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.",
+    "Maecenas egestas arcu quis ligula mattis placerat. Duis lobortis massa imperdiet quam. Donec vitae orci sed dolor rutrum auctor.",
+    "Proin faucibus arcu quis ante. In consectetuer turpis ut velit. Nulla facilisi. Ut fringilla suscipit ligula.",
+    "Fusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl.",
+    "Pellentesque dapibus hendrerit tortor. Praesent egestas tristique nibh. Sed a libero. Cras varius donec vitae orci sed dolor.",
+    "Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.",
+    "Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.",
+  ];
+
+  const WORDS = LOREM.join(' ').replace(/[.,]/g, '').toLowerCase().split(/\s+/);
+
+  function generate() {
+    const count = Math.min(100, Math.max(1, parseInt((document.getElementById('lg-count') as HTMLInputElement).value) || 3));
+    const type = (document.getElementById('lg-type') as HTMLSelectElement).value;
+    const output = document.getElementById('lg-output') as HTMLTextAreaElement;
+
+    if (type === 'paragraphs') {
+      const paragraphs = [];
+      for (let i = 0; i < count; i++) {
+        const len = 3 + Math.floor(Math.random() * 4);
+        const sentences = [];
+        for (let j = 0; j < len; j++) {
+          sentences.push(LOREM[(i * len + j) % LOREM.length]);
+        }
+        paragraphs.push(sentences.join(' '));
+      }
+      output.value = paragraphs.join('\n\n');
+    } else if (type === 'sentences') {
+      const sentences = [];
+      for (let i = 0; i < count; i++) {
+        sentences.push(LOREM[i % LOREM.length]);
+      }
+      output.value = sentences.join(' ');
+    } else {
+      const words = [];
+      for (let i = 0; i < count; i++) {
+        words.push(WORDS[i % WORDS.length]);
+      }
+      words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
+      output.value = words.join(' ') + '.';
+    }
+  }
+
+  document.getElementById('lg-run')!.addEventListener('click', generate);
+  document.getElementById('lg-copy')!.addEventListener('click', () => {
+    navigator.clipboard.writeText((document.getElementById('lg-output') as HTMLTextAreaElement).value);
+  });
+
+  generate();
+</script>

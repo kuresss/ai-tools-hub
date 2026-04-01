@@ -8,6 +8,7 @@
   },
   "description": "Free AI-powered online tools - text summarizer, sentiment analyzer, translator and more",
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.2",
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.2",
     "tailwindcss": "^4.2.2"

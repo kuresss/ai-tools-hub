@@ -1,0 +1,116 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="JSON Formatter & Validator"
+  description="Format, beautify, and validate JSON data online. Minify or pretty-print JSON with syntax highlighting. Free online JSON tool."
+>
+  <div id="json-app">
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Input JSON</label>
+        <textarea
+          id="jf-input"
+          rows="15"
+          placeholder='{"name": "example", "value": 42}'
+          class="w-full border border-gray-300 rounded-lg p-4 text-sm font-mono resize-y focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+        ></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Output</label>
+        <textarea
+          id="jf-output"
+          rows="15"
+          readonly
+          class="w-full border border-gray-300 rounded-lg p-4 text-sm font-mono bg-gray-50 resize-y"
+        ></textarea>
+      </div>
+    </div>
+
+    <div id="jf-status" class="mt-3 text-sm hidden"></div>
+
+    <div class="flex flex-wrap gap-3 mt-4">
+      <button id="jf-format" class="bg-indigo-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors">
+        Format / Beautify
+      </button>
+      <button id="jf-minify" class="bg-gray-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+        Minify
+      </button>
+      <button id="jf-validate" class="bg-green-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
+        Validate
+      </button>
+      <button id="jf-copy" class="bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg text-sm hover:bg-gray-300 transition-colors">
+        Copy Output
+      </button>
+      <button id="jf-clear" class="bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg text-sm hover:bg-gray-300 transition-colors">
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <div class="mt-12 prose prose-sm max-w-none">
+    <h2>Free Online JSON Formatter and Validator</h2>
+    <p>Format, beautify, minify, and validate JSON data instantly. Our JSON formatter makes it easy to read and debug JSON with proper indentation. Perfect for developers working with APIs, config files, and data processing.</p>
+    <h3>Features</h3>
+    <ul>
+      <li><strong>Format / Beautify</strong> - Pretty-print JSON with 2-space indentation</li>
+      <li><strong>Minify</strong> - Compress JSON by removing all whitespace</li>
+      <li><strong>Validate</strong> - Check if your JSON is valid with detailed error messages</li>
+      <li><strong>No data sent</strong> - All processing happens in your browser</li>
+    </ul>
+  </div>
+</ToolLayout>
+
+<script>
+  const inputEl = document.getElementById('jf-input') as HTMLTextAreaElement;
+  const outputEl = document.getElementById('jf-output') as HTMLTextAreaElement;
+  const statusEl = document.getElementById('jf-status')!;
+
+  function showStatus(message: string, isError: boolean) {
+    statusEl.textContent = message;
+    statusEl.className = `mt-3 text-sm p-3 rounded-lg ${isError ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-green-50 text-green-700 border border-green-200'}`;
+    statusEl.classList.remove('hidden');
+  }
+
+  document.getElementById('jf-format')!.addEventListener('click', () => {
+    try {
+      const parsed = JSON.parse(inputEl.value);
+      outputEl.value = JSON.stringify(parsed, null, 2);
+      showStatus('Valid JSON - formatted successfully!', false);
+    } catch (e: any) {
+      showStatus(`Invalid JSON: ${e.message}`, true);
+    }
+  });
+
+  document.getElementById('jf-minify')!.addEventListener('click', () => {
+    try {
+      const parsed = JSON.parse(inputEl.value);
+      outputEl.value = JSON.stringify(parsed);
+      showStatus(`Minified! ${inputEl.value.length} → ${outputEl.value.length} characters`, false);
+    } catch (e: any) {
+      showStatus(`Invalid JSON: ${e.message}`, true);
+    }
+  });
+
+  document.getElementById('jf-validate')!.addEventListener('click', () => {
+    try {
+      const parsed = JSON.parse(inputEl.value);
+      const type = Array.isArray(parsed) ? 'Array' : typeof parsed;
+      const keys = typeof parsed === 'object' && parsed !== null ? Object.keys(parsed).length : 0;
+      showStatus(`Valid JSON! Type: ${type}${type === 'object' ? `, ${keys} key(s)` : type === 'Array' ? `, ${parsed.length} item(s)` : ''}`, false);
+    } catch (e: any) {
+      showStatus(`Invalid JSON: ${e.message}`, true);
+    }
+  });
+
+  document.getElementById('jf-copy')!.addEventListener('click', () => {
+    navigator.clipboard.writeText(outputEl.value);
+  });
+
+  document.getElementById('jf-clear')!.addEventListener('click', () => {
+    inputEl.value = '';
+    outputEl.value = '';
+    statusEl.classList.add('hidden');
+  });
+</script>
