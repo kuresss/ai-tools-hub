@@ -17,6 +17,18 @@ urls=(
   "https://kuresss-ai-tools.netlify.app/tools/lorem-generator/"
   "https://kuresss-ai-tools.netlify.app/tools/hash-generator/"
   "https://kuresss-ai-tools.netlify.app/tools/url-encoder/"
+  "https://kuresss-ai-tools.netlify.app/tools/regex-tester/"
+  "https://kuresss-ai-tools.netlify.app/tools/color-converter/"
+  "https://kuresss-ai-tools.netlify.app/tools/markdown-preview/"
+  "https://kuresss-ai-tools.netlify.app/tools/diff-checker/"
+  "https://kuresss-ai-tools.netlify.app/tools/qr-generator/"
+  "https://kuresss-ai-tools.netlify.app/tools/password-generator/"
+  "https://kuresss-ai-tools.netlify.app/tools/text-to-speech/"
+  "https://kuresss-ai-tools.netlify.app/tools/image-compressor/"
+  "https://kuresss-ai-tools.netlify.app/tools/timestamp-converter/"
+  "https://kuresss-ai-tools.netlify.app/tools/cron-generator/"
+  "https://kuresss-ai-tools.netlify.app/about/"
+  "https://kuresss-ai-tools.netlify.app/privacy/"
   "https://kuresss-ai-tools.netlify.app/sitemap-index.xml"
 )
 

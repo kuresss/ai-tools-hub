@@ -149,6 +149,18 @@ const tools = [
   title="Free AI-Powered Online Tools"
   description="Free AI tools that run entirely in your browser. Text summarizer, sentiment analyzer, translator, word counter & more. No sign-up, no API keys, 100% private."
 >
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "AI Tools Hub",
+    "url": "https://kuresss-ai-tools.netlify.app",
+    "description": "Free AI-powered tools that run entirely in your browser. No sign-up, no API keys, 100% private.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://kuresss-ai-tools.netlify.app/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  })} />
   <!-- Hero Section -->
   <section class="bg-gradient-to-br from-indigo-600 to-purple-700 text-white py-20">
     <div class="max-w-4xl mx-auto px-4 text-center">
