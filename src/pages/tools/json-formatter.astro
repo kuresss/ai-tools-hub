@@ -60,6 +60,42 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       <li><strong>No data sent</strong> - All processing happens in your browser</li>
     </ul>
   </div>
+
+  <!-- How to Use Section -->
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4">How to Use the JSON Formatter</h2>
+    <ol class="list-decimal pl-6 space-y-3 text-gray-600">
+      <li><strong>Paste your JSON</strong> — Copy your raw JSON data and paste it into the input text area on the left side.</li>
+      <li><strong>Choose an action</strong> — Click "Format / Beautify" to pretty-print with indentation, "Minify" to remove whitespace, or "Validate" to check for errors.</li>
+      <li><strong>Review the output</strong> — The formatted or minified JSON appears in the output area on the right, with a status message confirming success or showing error details.</li>
+      <li><strong>Copy the result</strong> — Click "Copy Output" to copy the processed JSON to your clipboard, ready to use in your code or API calls.</li>
+    </ol>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="mt-12 space-y-6">
+    <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What is JSON formatting and why do I need it?</summary>
+      <p class="mt-3 text-gray-600 text-sm">JSON formatting (also called pretty-printing) adds proper indentation and line breaks to raw JSON data, making it human-readable. This is essential for debugging API responses, reading configuration files, and understanding data structures at a glance.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Is my JSON data safe when using this tool?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Yes, completely. All JSON processing happens directly in your browser using JavaScript. Your data is never sent to any server, making this tool safe for formatting sensitive or proprietary JSON data.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What does minifying JSON do?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Minifying JSON removes all unnecessary whitespace, line breaks, and indentation from the data. This reduces the file size, which is useful for optimizing API payloads, storing compact data, and improving network transfer speeds.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">How do I fix invalid JSON errors?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Common JSON errors include missing commas between items, trailing commas after the last item, single quotes instead of double quotes, and unescaped special characters in strings. Use the "Validate" button to see the specific error message and line location.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Is there a size limit for JSON input?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Since the tool runs in your browser, there is no server-imposed size limit. However, very large JSON files (over 10 MB) may cause slower processing depending on your device's memory and processing power.</p>
+    </details>
+  </div>
 </ToolLayout>
 
 <script>

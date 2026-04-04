@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = [
+  {
+    title: 'How to Create a QR Code for Free (2026 Guide)',
+    description: 'Learn how to create QR codes for free. Step-by-step guide covering business cards, menus, marketing, and more.',
+    href: '/blog/how-to-create-qr-code-free',
+    date: '2026-04-01',
+    readingTime: '4',
+    icon: '▣',
+  },
+  {
+    title: 'How to Format JSON: A Complete Guide for Developers',
+    description: 'Master JSON formatting and validation. Learn what JSON is, why formatting matters, common errors, and best practices.',
+    href: '/blog/how-to-format-json',
+    date: '2026-04-02',
+    readingTime: '5',
+    icon: '{}',
+  },
+  {
+    title: "How to Generate a Strong Password You'll Actually Remember",
+    description: 'Discover why strong passwords matter, what makes them secure, common mistakes to avoid, and how to use a password generator.',
+    href: '/blog/how-to-generate-strong-password',
+    date: '2026-04-03',
+    readingTime: '4',
+    icon: '🔑',
+  },
+];
+---
+
+<BaseLayout
+  title="Blog - Tips, Guides & Tutorials"
+  description="Helpful guides and tutorials on QR codes, JSON formatting, password security, and more. Learn how to use free online tools effectively."
+>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "AI Tools Hub Blog",
+    "url": Astro.url.href,
+    "description": "Helpful guides and tutorials on using free online tools."
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-indigo-600 to-purple-700 text-white py-16">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Blog</h1>
+      <p class="text-xl text-indigo-100 max-w-2xl mx-auto">
+        Tips, guides, and tutorials to help you get the most out of free online tools.
+      </p>
+    </div>
+  </section>
+
+  <!-- Blog Posts Grid -->
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {posts.map((post) => (
+        <a
+          href={post.href}
+          class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-indigo-200 transition-all group"
+        >
+          <div class="flex items-start justify-between mb-4">
+            <span class="text-3xl">{post.icon}</span>
+            <span class="text-xs text-gray-500">{post.readingTime} min read</span>
+          </div>
+          <h2 class="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors">
+            {post.title}
+          </h2>
+          <p class="text-gray-600 text-sm mb-3">{post.description}</p>
+          <time class="text-xs text-gray-400" datetime={post.date}>
+            {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </time>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,111 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+const jsonExample = `{
+  "name": "Alice",
+  "age": 30,
+  "skills": ["JavaScript", "Python", "SQL"],
+  "active": true
+}`;
+
+const jsonMinified = `{"users":[{"id":1,"name":"Alice","email":"alice@example.com","roles":["admin","editor"]},{"id":2,"name":"Bob","email":"bob@example.com","roles":["viewer"]}]}`;
+
+const jsonFormatted = `{
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "email": "alice@example.com",
+      "roles": ["admin", "editor"]
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "email": "bob@example.com",
+      "roles": ["viewer"]
+    }
+  ]
+}`;
+
+const trailingComma = `{ "name": "Alice", "age": 30, }  // Error: trailing comma`;
+const singleQuotes = `{ 'name': 'Alice' }  // Error: single quotes`;
+const unquotedKey = `{ name: "Alice" }  // Error: unquoted key`;
+---
+
+<BlogLayout
+  title="How to Format JSON: A Complete Guide for Developers"
+  description="Learn how to format, beautify, and validate JSON data. Understand what JSON is, why formatting matters, common errors, and best practices for developers."
+  date="2026-04-02"
+  readingTime="5"
+>
+  <p>If you work with APIs, configuration files, or web development in any capacity, you have almost certainly encountered JSON. It is the universal data format of the modern web, but raw JSON can be incredibly difficult to read without proper formatting. In this guide, you will learn what JSON is, why formatting it properly matters, how to spot common errors, and the best practices every developer should follow.</p>
+
+  <h2 class="text-2xl font-bold mt-8 mb-4">What Is JSON?</h2>
+  <p>JSON (JavaScript Object Notation) is a lightweight, text-based data interchange format. Despite its name, JSON is language-independent and used across virtually every programming language including Python, Java, Go, Ruby, PHP, and of course JavaScript and TypeScript.</p>
+  <p class="mt-3">A typical JSON structure looks like this:</p>
+  <pre class="bg-gray-100 rounded-lg p-4 mt-3 overflow-x-auto text-sm"><code>{jsonExample}</code></pre>
+  <p class="mt-3">JSON supports six data types: strings, numbers, booleans, null, arrays, and objects. Its simplicity is what makes it so widely adopted. Unlike XML, JSON has minimal syntax overhead, making it both human-readable and efficient for machines to parse.</p>
+
+  <h2 class="text-2xl font-bold mt-8 mb-4">Why Does JSON Formatting Matter?</h2>
+  <p>API responses, database exports, and configuration files often contain JSON in a single, compressed line called minified JSON. While this is efficient for data transfer, it is nearly impossible for humans to read and debug. Consider this minified response:</p>
+  <pre class="bg-gray-100 rounded-lg p-4 mt-3 overflow-x-auto text-sm"><code>{jsonMinified}</code></pre>
+  <p class="mt-3">Now compare it with the formatted version:</p>
+  <pre class="bg-gray-100 rounded-lg p-4 mt-3 overflow-x-auto text-sm"><code>{jsonFormatted}</code></pre>
+  <p class="mt-3">The formatted version is immediately understandable. Proper formatting helps you identify the data structure at a glance, spot missing fields, debug API issues faster, and share data with teammates in a readable way.</p>
+
+  <h2 class="text-2xl font-bold mt-8 mb-4">How to Format JSON Using Our Free Tool</h2>
+  <p>The fastest way to format JSON is with an online tool. Here is how to use our <a href="/tools/json-formatter" class="text-indigo-600 hover:underline">free JSON Formatter</a>:</p>
+  <ol class="list-decimal list-inside space-y-3 mt-4">
+    <li><strong>Paste your JSON</strong> &mdash; Copy your raw or minified JSON and paste it into the input area.</li>
+    <li><strong>Click Format</strong> &mdash; The tool instantly beautifies the JSON with proper indentation and line breaks.</li>
+    <li><strong>Review the result</strong> &mdash; The formatted output appears with syntax highlighting. If your JSON contains errors, the tool will show you exactly where the problem is.</li>
+    <li><strong>Copy or minify</strong> &mdash; Copy the formatted output to your clipboard, or use the minify option to compress it back for production use.</li>
+  </ol>
+  <p class="mt-3">Everything runs in your browser. No data is sent to any server, making it safe for sensitive API responses, tokens, and configuration data.</p>
+
+  <h2 class="text-2xl font-bold mt-8 mb-4">Common JSON Errors and How to Fix Them</h2>
+  <p>Even experienced developers run into JSON syntax errors. Here are the most common issues:</p>
+
+  <h3 class="text-xl font-semibold mt-6 mb-3">Trailing Commas</h3>
+  <p>JSON does not allow trailing commas after the last item in an array or object. This is valid in JavaScript but will break JSON parsing:</p>
+  <pre class="bg-red-50 rounded-lg p-4 mt-3 overflow-x-auto text-sm"><code>{trailingComma}</code></pre>
+  <p class="mt-2">Remove the comma after the last property to fix it.</p>
+
+  <h3 class="text-xl font-semibold mt-6 mb-3">Single Quotes Instead of Double Quotes</h3>
+  <p>JSON requires double quotes for strings. Single quotes are not valid:</p>
+  <pre class="bg-red-50 rounded-lg p-4 mt-3 overflow-x-auto text-sm"><code>{singleQuotes}</code></pre>
+  <p class="mt-2">Always use double quotes: <code set:html={'{ "name": "Alice" }'} /></p>
+
+  <h3 class="text-xl font-semibold mt-6 mb-3">Unquoted Keys</h3>
+  <p>All keys in JSON must be wrapped in double quotes. Unquoted keys work in JavaScript objects but not in JSON:</p>
+  <pre class="bg-red-50 rounded-lg p-4 mt-3 overflow-x-auto text-sm"><code>{unquotedKey}</code></pre>
+
+  <h3 class="text-xl font-semibold mt-6 mb-3">Comments in JSON</h3>
+  <p>Standard JSON does not support comments. If you need comments in configuration files, consider using JSONC (JSON with Comments) or YAML instead. Some tools like VS Code support JSONC natively for settings files.</p>
+
+  <h3 class="text-xl font-semibold mt-6 mb-3">Missing or Extra Brackets</h3>
+  <p>Mismatched curly braces or square brackets are easy to miss in large JSON files. A formatter tool will highlight exactly where the mismatch occurs, saving you significant debugging time.</p>
+
+  <h2 class="text-2xl font-bold mt-8 mb-4">JSON Best Practices for Developers</h2>
+  <ul class="list-disc list-inside space-y-2 mt-4">
+    <li><strong>Use consistent indentation</strong> &mdash; Two spaces is the most common convention for JSON files. Four spaces is also acceptable. Be consistent across your project.</li>
+    <li><strong>Use camelCase for keys</strong> &mdash; While not required, camelCase (e.g., <code>firstName</code>) is the most common convention in JSON, especially in JavaScript ecosystems.</li>
+    <li><strong>Validate before deploying</strong> &mdash; Always validate your JSON configuration files before deploying. A single misplaced comma can bring down an entire application.</li>
+    <li><strong>Minify for production</strong> &mdash; When sending JSON over the network, use minified JSON to reduce payload size. This can significantly improve API response times.</li>
+    <li><strong>Use a schema</strong> &mdash; For complex JSON structures, define a JSON Schema to validate data shape and types. This catches errors early and serves as documentation.</li>
+    <li><strong>Handle encoding properly</strong> &mdash; JSON uses UTF-8 encoding. Make sure special characters and unicode are properly escaped when generating JSON programmatically.</li>
+  </ul>
+
+  <h2 class="text-2xl font-bold mt-8 mb-4">JSON Formatting in Your Editor</h2>
+  <p>Most code editors offer built-in or extension-based JSON formatting. In VS Code, you can format a JSON file by pressing <code>Shift+Alt+F</code> (Windows) or <code>Shift+Option+F</code> (Mac). For quick one-off formatting tasks, however, an online tool is often faster since you can paste, format, and copy without opening a file.</p>
+  <p class="mt-3">Command-line tools like <code>jq</code> and <code>python -m json.tool</code> are also excellent for formatting JSON in terminal workflows and shell scripts.</p>
+
+  <!-- CTA Section -->
+  <div class="mt-10 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-6 text-center">
+    <h2 class="text-xl font-bold mb-2">Try Our Free JSON Formatter</h2>
+    <p class="text-gray-600 mb-4">Format, beautify, minify, and validate JSON instantly in your browser. No sign-up required.</p>
+    <a href="/tools/json-formatter" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+      Format JSON Now
+    </a>
+  </div>
+</BlogLayout>

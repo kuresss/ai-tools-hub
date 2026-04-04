@@ -72,6 +72,31 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       <li>Download the QR code as a PNG image</li>
     </ul>
   </div>
+
+  <!-- FAQ Section -->
+  <div class="mt-12 space-y-6">
+    <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Is this QR code generator really free?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Yes, our QR code generator is completely free to use with no sign-up or account required. You can generate unlimited QR codes, customize colors and sizes, and download them as PNG images at no cost.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Do the QR codes expire?</summary>
+      <p class="mt-3 text-gray-600 text-sm">No, QR codes generated with this tool are static and never expire. The data is encoded directly into the QR code image, so it will work as long as the URL or content it points to remains available.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What can I encode in a QR code?</summary>
+      <p class="mt-3 text-gray-600 text-sm">You can encode any text or URL into a QR code. Common uses include website links, email addresses, phone numbers, Wi-Fi credentials, and plain text messages. The maximum content length depends on the complexity of the data.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Can I use generated QR codes for commercial purposes?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Absolutely. QR codes generated with this tool are yours to use however you like, including on business cards, product packaging, marketing flyers, and restaurant menus. There are no usage restrictions.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Why is my QR code not scanning?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Make sure there is enough contrast between the foreground and background colors. Dark foreground on a light background works best. Also ensure the QR code is printed or displayed at a large enough size for your scanner to read it clearly.</p>
+    </details>
+  </div>
 </ToolLayout>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>

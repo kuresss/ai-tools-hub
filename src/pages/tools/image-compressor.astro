@@ -103,6 +103,43 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       <li>Meet social media file size limits</li>
     </ul>
   </div>
+
+  <!-- How to Use Section -->
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4">How to Use the Image Compressor</h2>
+    <ol class="list-decimal pl-6 space-y-3 text-gray-600">
+      <li><strong>Upload your image</strong> — Drag and drop an image onto the upload area, or click to browse and select a file from your device. Supports JPEG, PNG, WebP, and GIF formats.</li>
+      <li><strong>Adjust quality settings</strong> — Use the quality slider to set your desired compression level. Lower values produce smaller files but reduce image quality.</li>
+      <li><strong>Choose output format</strong> — Select JPEG, PNG, or WebP as the output format. WebP typically offers the best compression-to-quality ratio for web use.</li>
+      <li><strong>Compress and compare</strong> — Click "Compress Image" to process the file. Review the before-and-after size comparison and visual preview to ensure the result meets your needs.</li>
+      <li><strong>Download the result</strong> — Click "Download Compressed Image" to save the optimized file to your device.</li>
+    </ol>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="mt-12 space-y-6">
+    <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Does compressing an image reduce its quality?</summary>
+      <p class="mt-3 text-gray-600 text-sm">It depends on the compression level. At higher quality settings (70-90%), the visual difference is usually imperceptible to the human eye while still achieving significant file size reduction. Use the before-and-after preview to find the right balance for your needs.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Are my images uploaded to a server?</summary>
+      <p class="mt-3 text-gray-600 text-sm">No. All image compression happens locally in your browser using the HTML5 Canvas API. Your images never leave your device, making this tool completely private and safe for sensitive or personal photos.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Which output format should I choose?</summary>
+      <p class="mt-3 text-gray-600 text-sm">WebP offers the best compression for web use and is supported by all modern browsers. Use JPEG for photos with wide compatibility needs. Choose PNG when you need to preserve transparency or require lossless compression for graphics and screenshots.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What is the maximum file size I can compress?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Since processing happens in your browser, there is no fixed upload limit. However, very large images (over 20 MB or extremely high resolution) may be slow to process depending on your device's available memory and processing power.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Why is my compressed file larger than the original?</summary>
+      <p class="mt-3 text-gray-600 text-sm">This can happen when converting between formats (e.g., a highly optimized JPEG to PNG) or when the quality setting is too high. Try lowering the quality slider or switching to WebP format for better compression results.</p>
+    </details>
+  </div>
 </ToolLayout>
 
 <script>
