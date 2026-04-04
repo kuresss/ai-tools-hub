@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="About AI Tools Hub - Free, private, browser-based AI tools. Learn about our mission and the technology behind our tools."
+>
+  <div class="max-w-3xl mx-auto px-4 py-16">
+    <h1 class="text-3xl font-bold mb-8">About AI Tools Hub</h1>
+
+    <div class="space-y-8">
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Our Mission</h2>
+        <p class="text-gray-600">AI Tools Hub provides free, privacy-first AI tools that run entirely in your browser. We believe powerful AI tools should be accessible to everyone — without subscriptions, API keys, or data collection.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">How It Works</h2>
+        <p class="text-gray-600 mb-3">Unlike most AI tools that send your data to cloud servers, our tools use <a href="https://huggingface.co/docs/transformers.js" class="text-indigo-600 hover:underline" target="_blank" rel="noopener">Transformers.js</a> to run open-source AI models directly in your web browser using WebAssembly and WebGPU.</p>
+        <p class="text-gray-600">This means:</p>
+        <ul class="list-disc pl-6 text-gray-600 space-y-2 mt-2">
+          <li>Your text never leaves your device</li>
+          <li>No server costs = free forever</li>
+          <li>Works offline after the first load</li>
+          <li>No rate limits or usage caps</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">What We Offer</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-indigo-50 rounded-lg p-4">
+            <h3 class="font-semibold text-indigo-700 mb-2">AI-Powered Tools</h3>
+            <p class="text-sm text-gray-600">Text summarization, sentiment analysis, translation, and text-to-speech — all powered by on-device AI models.</p>
+          </div>
+          <div class="bg-green-50 rounded-lg p-4">
+            <h3 class="font-semibold text-green-700 mb-2">Developer & Text Tools</h3>
+            <p class="text-sm text-gray-600">JSON formatter, Base64 encoder, regex tester, hash generator, QR code maker, and many more everyday utilities.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Technology</h2>
+        <ul class="list-disc pl-6 text-gray-600 space-y-2">
+          <li><strong>Framework:</strong> <a href="https://astro.build" class="text-indigo-600 hover:underline" target="_blank" rel="noopener">Astro</a> for fast, lightweight pages</li>
+          <li><strong>AI Engine:</strong> <a href="https://huggingface.co/docs/transformers.js" class="text-indigo-600 hover:underline" target="_blank" rel="noopener">Transformers.js</a> for client-side AI</li>
+          <li><strong>Styling:</strong> <a href="https://tailwindcss.com" class="text-indigo-600 hover:underline" target="_blank" rel="noopener">Tailwind CSS</a></li>
+          <li><strong>Hosting:</strong> <a href="https://www.netlify.com" class="text-indigo-600 hover:underline" target="_blank" rel="noopener">Netlify</a> (free tier)</li>
+          <li><strong>Analytics:</strong> <a href="https://www.goatcounter.com" class="text-indigo-600 hover:underline" target="_blank" rel="noopener">GoatCounter</a> (privacy-friendly)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Support This Project</h2>
+        <p class="text-gray-600 mb-4">AI Tools Hub is a solo project maintained in my spare time. If you find these tools useful, consider supporting the project:</p>
+        <a href="https://ko-fi.com/kuresss" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-[#13C3FF] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
+          Support on Ko-fi
+        </a>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Contact</h2>
+        <p class="text-gray-600">Have feedback, bug reports, or feature requests? Reach out through our <a href="https://github.com/kuresss" class="text-indigo-600 hover:underline" target="_blank" rel="noopener">GitHub</a>.</p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

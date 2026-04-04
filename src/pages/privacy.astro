@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="Privacy Policy for AI Tools Hub. Learn how we handle your data - spoiler: all processing happens in your browser."
+>
+  <div class="max-w-3xl mx-auto px-4 py-16">
+    <h1 class="text-3xl font-bold mb-8">Privacy Policy</h1>
+    <p class="text-gray-500 text-sm mb-8">Last updated: April 4, 2026</p>
+
+    <div class="prose prose-gray max-w-none space-y-6">
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Overview</h2>
+        <p class="text-gray-600">AI Tools Hub is committed to protecting your privacy. Our tools are designed with a privacy-first approach — all text and data processing happens entirely in your browser. No data is sent to our servers.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Data We Do NOT Collect</h2>
+        <ul class="list-disc pl-6 text-gray-600 space-y-2">
+          <li><strong>Your text input</strong> — All AI processing (summarization, sentiment analysis, translation) runs locally in your browser using Transformers.js. Your text never leaves your device.</li>
+          <li><strong>Personal information</strong> — We do not require sign-up, login, or any personal details.</li>
+          <li><strong>Cookies for tracking</strong> — We do not use tracking cookies.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Analytics</h2>
+        <p class="text-gray-600">We use <a href="https://www.goatcounter.com/" class="text-indigo-600 hover:underline" target="_blank" rel="noopener">GoatCounter</a>, a privacy-friendly, open-source analytics tool. GoatCounter does not use cookies, does not collect personal data, and is fully GDPR compliant. It only tracks anonymous page view counts.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Advertising</h2>
+        <p class="text-gray-600">We may display advertisements through third-party ad networks (such as Google AdSense and A-Ads) to support the free operation of this site. These services may use cookies or similar technologies to serve ads based on your prior visits to this or other websites. You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" class="text-indigo-600 hover:underline" target="_blank" rel="noopener">Google Ads Settings</a>.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Third-Party Services</h2>
+        <p class="text-gray-600">Our site may contain links to external services such as Ko-fi for voluntary donations. These services have their own privacy policies, and we encourage you to review them.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Data Storage</h2>
+        <p class="text-gray-600">Some tools may use your browser's local storage to save preferences (such as theme settings). This data is stored only on your device and is never transmitted to any server. You can clear this data at any time through your browser settings.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Children's Privacy</h2>
+        <p class="text-gray-600">Our service is not directed to children under 13. We do not knowingly collect any personal information from children.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Changes to This Policy</h2>
+        <p class="text-gray-600">We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold mb-3">Contact</h2>
+        <p class="text-gray-600">If you have any questions about this Privacy Policy, please reach out to us through our <a href="/about" class="text-indigo-600 hover:underline">About page</a>.</p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
