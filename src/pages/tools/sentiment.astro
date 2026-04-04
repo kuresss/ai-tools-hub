@@ -66,6 +66,40 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       <li>Market research and opinion mining</li>
     </ul>
   </div>
+
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4">How to Use the AI Sentiment Analyzer</h2>
+    <ol class="list-decimal pl-6 space-y-3 text-gray-600">
+      <li><strong>Enter your text</strong> — Paste or type the text you want to analyze into the input box. This can be a review, email, tweet, or any other text up to 512 characters.</li>
+      <li><strong>Click "Analyze Sentiment"</strong> — The AI model will load on first use (this takes 15-30 seconds). Subsequent analyses are instant.</li>
+      <li><strong>Review the results</strong> — See whether your text is classified as Positive or Negative, along with a confidence percentage.</li>
+      <li><strong>Check the breakdown</strong> — View the full score distribution across sentiment categories to understand the nuance of the analysis.</li>
+    </ol>
+  </div>
+
+  <div class="mt-12 space-y-6">
+    <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Is this sentiment analysis tool free to use?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Yes, the AI Sentiment Analyzer is completely free with no usage limits. The AI model runs directly in your browser, so there are no server costs or API fees involved.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Is my text data sent to any server?</summary>
+      <p class="mt-3 text-gray-600 text-sm">No. The sentiment analysis model is downloaded once to your browser and all processing happens locally on your device. Your text never leaves your computer, making this tool safe for confidential content.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">How accurate is AI sentiment analysis?</summary>
+      <p class="mt-3 text-gray-600 text-sm">This tool uses a DistilBERT model fine-tuned on the SST-2 dataset, which achieves over 90% accuracy on standard benchmarks. It works best on clearly opinionated text like reviews and social media posts. Sarcasm and highly nuanced text may be more challenging.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What languages does the sentiment analyzer support?</summary>
+      <p class="mt-3 text-gray-600 text-sm">The current model is optimized for English text. While it may produce results for other languages, accuracy will be significantly lower. We recommend using English text for the most reliable analysis.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Can I analyze long documents or bulk text?</summary>
+      <p class="mt-3 text-gray-600 text-sm">The tool processes up to 512 characters at a time, which covers most reviews, tweets, and short paragraphs. For longer documents, we recommend breaking the text into smaller sections and analyzing each one individually.</p>
+    </details>
+  </div>
 </ToolLayout>
 
 <script type="module">

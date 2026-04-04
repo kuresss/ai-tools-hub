@@ -88,6 +88,40 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       <li><strong>kebab-case</strong> - Used in CSS class names and URLs</li>
     </ul>
   </div>
+
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4">How to Use the Text Case Converter</h2>
+    <ol class="list-decimal pl-6 space-y-3 text-gray-600">
+      <li><strong>Enter your text</strong> — Type or paste the text you want to convert into the input box.</li>
+      <li><strong>Choose a case format</strong> — Click any of the 12 conversion buttons (UPPERCASE, lowercase, Title Case, camelCase, snake_case, etc.) to transform your text.</li>
+      <li><strong>View the result</strong> — The converted text appears instantly in the output box below the buttons.</li>
+      <li><strong>Copy the result</strong> — Click "Copy Result" to copy the converted text to your clipboard, ready to paste anywhere.</li>
+    </ol>
+  </div>
+
+  <div class="mt-12 space-y-6">
+    <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What is the difference between camelCase, PascalCase, and snake_case?</summary>
+      <p class="mt-3 text-gray-600 text-sm">camelCase starts with a lowercase letter and capitalizes each subsequent word (e.g., myVariableName). PascalCase capitalizes every word including the first (e.g., MyVariableName). snake_case uses underscores between lowercase words (e.g., my_variable_name). Each convention is standard in different programming languages.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">How do I convert text to title case?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Simply paste your text into the input box and click the "Title Case" button. The tool will capitalize the first letter of every word automatically. This is useful for formatting headings, titles, and proper nouns.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What is kebab-case used for?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Kebab-case (also called dash-case) uses hyphens between lowercase words, like "my-class-name". It is the standard convention for CSS class names, HTML attributes, and URL slugs. Our tool also offers a dedicated URL slug option that strips special characters.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Can I convert text with special characters?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Yes, the tool handles text with special characters. For programming-oriented formats like camelCase and snake_case, special characters are stripped and only alphanumeric content is used. For general formats like uppercase and lowercase, all characters are preserved.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">How do I fix text that is stuck in all caps?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Paste your ALL CAPS text into the input box and click either "lowercase" to make everything lowercase or "Sentence case" to capitalize only the first letter of each sentence. This is the fastest way to fix accidentally capitalized text without retyping it.</p>
+    </details>
+  </div>
 </ToolLayout>
 
 <script>

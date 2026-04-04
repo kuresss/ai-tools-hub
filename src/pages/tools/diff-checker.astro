@@ -88,6 +88,41 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
     <h3>Text Compare - How to Use</h3>
     <p>Paste the original text in the left pane and the modified text in the right pane, then click "Compare". The diff result will show each line with color coding: green background for added lines, red background for removed lines, and white for unchanged lines.</p>
   </div>
+
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4">How to Use the Diff Checker</h2>
+    <ol class="list-decimal pl-6 space-y-3 text-gray-600">
+      <li><strong>Paste the original text</strong> — Enter or paste the first version of your text into the "Original Text" field on the left.</li>
+      <li><strong>Paste the modified text</strong> — Enter or paste the updated version into the "Modified Text" field on the right.</li>
+      <li><strong>Adjust whitespace settings</strong> — Check "Ignore leading/trailing whitespace" if you want to skip insignificant spacing differences.</li>
+      <li><strong>Click Compare</strong> — Press the "Compare" button to generate a line-by-line diff with color-coded results showing additions, deletions, and unchanged lines.</li>
+      <li><strong>Review the results</strong> — Scroll through the diff output to see green-highlighted additions and red-highlighted removals, along with summary statistics at the top.</li>
+    </ol>
+  </div>
+
+  <div class="mt-12 space-y-6">
+    <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">How does the diff checker compare two texts?</summary>
+      <p class="mt-3 text-gray-600 text-sm">The tool uses a Longest Common Subsequence (LCS) algorithm to compare the two texts line by line. It identifies which lines were added, removed, or left unchanged, then displays the results with color coding so you can quickly spot every difference.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Can I use this to compare code files?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Yes, this diff checker works great for comparing code, configuration files, scripts, and any other plain text content. It preserves whitespace and formatting so you can see exactly what changed between two versions of your source code.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Is my data safe when using this tool?</summary>
+      <p class="mt-3 text-gray-600 text-sm">All text comparison happens entirely in your browser. Your data is never uploaded to any server or stored anywhere, making it safe for comparing sensitive documents, proprietary code, or confidential content.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What does the "Ignore whitespace" option do?</summary>
+      <p class="mt-3 text-gray-600 text-sm">When enabled, the tool trims leading and trailing whitespace from each line before comparing. This is useful when you want to focus on meaningful content changes and ignore differences caused by indentation or trailing spaces.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Is there a limit on how much text I can compare?</summary>
+      <p class="mt-3 text-gray-600 text-sm">There is no hard limit, but since the comparison runs in your browser, very large texts (tens of thousands of lines) may take longer to process. For typical documents and code files, the diff completes instantly.</p>
+    </details>
+  </div>
 </ToolLayout>
 
 <script>

@@ -1,0 +1,71 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+const base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+const helloExample = 'SGVsbG8=';
+const dataUrlExample = 'data:image/png;base64,iVBORw0KGgo...';
+const jsonExample = '{ "token": "eyJhbGciOiJIUzI1NiJ9..." }';
+const basicAuthExample = 'Authorization: Basic dXNlcjpwYXNz';
+---
+
+<BlogLayout
+  title="What is Base64 Encoding? A Simple Explanation with Examples"
+  description="Learn what Base64 encoding is, why it exists, common use cases like data URLs, JWT tokens, and APIs, and how to encode and decode Base64 strings."
+  date="2026-04-04"
+  readingTime="5"
+>
+  <p>If you have spent any time working with web development, APIs, or email systems, you have probably encountered Base64 encoding. It looks like a random string of letters and numbers, but it serves a very practical purpose. This guide breaks down what Base64 is, why it exists, and when you should (and should not) use it.</p>
+
+  <h2 class="text-2xl font-bold mt-8 mb-4">What Is Base64 Encoding?</h2>
+  <p>Base64 is a method of converting binary data into a text format using a set of 64 printable ASCII characters. The character set consists of uppercase letters A through Z, lowercase letters a through z, digits 0 through 9, plus the symbols + and /, with = used for padding. In other words, the alphabet is:</p>
+  <p class="mt-3"><code class="bg-gray-100 px-2 py-1 rounded text-sm break-all">{base64Chars}</code></p>
+  <p class="mt-3">The encoding process takes every 3 bytes of binary data and converts them into 4 Base64 characters. This means Base64-encoded data is always about 33 percent larger than the original. For example, the word "Hello" becomes <code class="bg-gray-100 px-2 py-1 rounded text-sm">{helloExample}</code> in Base64.</p>
+
+  <h2 class="text-2xl font-bold mt-8 mb-4">Why Does Base64 Exist?</h2>
+  <p>Many systems were originally designed to handle only text data. Email protocols like SMTP, for instance, were built for 7-bit ASCII text. When you need to send binary data, such as images, files, or non-ASCII characters, through these text-only channels, you need a way to represent that binary data as plain text. That is exactly what Base64 does.</p>
+  <p class="mt-3">Base64 encoding ensures that binary data survives transport through systems that might otherwise corrupt or misinterpret raw bytes. It uses only characters that are safe across virtually every text-based protocol and system.</p>
+
+  <h2 class="text-2xl font-bold mt-8 mb-4">Common Use Cases for Base64</h2>
+
+  <h3 class="text-xl font-semibold mt-6 mb-3">Email Attachments</h3>
+  <p>When you attach a file to an email, the email client encodes it in Base64 before sending. The recipient's email client decodes it back to the original file. This is part of the MIME standard that makes modern email work.</p>
+
+  <h3 class="text-xl font-semibold mt-6 mb-3">Data URLs in HTML and CSS</h3>
+  <p>You can embed small images or fonts directly in your HTML or CSS using data URLs. Instead of linking to a separate file, you include the Base64-encoded content inline. A data URL looks like this:</p>
+  <p class="mt-2"><code class="bg-gray-100 px-2 py-1 rounded text-sm break-all">{dataUrlExample}</code></p>
+  <p class="mt-2">This eliminates an extra HTTP request, which can improve performance for very small assets like icons.</p>
+
+  <h3 class="text-xl font-semibold mt-6 mb-3">JWT Tokens</h3>
+  <p>JSON Web Tokens (JWTs), widely used for authentication, consist of three Base64-encoded segments separated by dots. The header and payload are Base64url-encoded JSON objects, making them safe to transmit in URLs and HTTP headers. A JWT in a JSON response looks like:</p>
+  <p class="mt-2"><code class="bg-gray-100 px-2 py-1 rounded text-sm break-all">{jsonExample}</code></p>
+
+  <h3 class="text-xl font-semibold mt-6 mb-3">API Authentication</h3>
+  <p>HTTP Basic Authentication encodes the username and password as a Base64 string and includes it in the request header. A typical authorization header looks like:</p>
+  <p class="mt-2"><code class="bg-gray-100 px-2 py-1 rounded text-sm break-all">{basicAuthExample}</code></p>
+  <p class="mt-2">It is important to understand that this is encoding, not encryption. Anyone can decode that string to reveal the credentials, which is why Basic Auth should only be used over HTTPS.</p>
+
+  <h3 class="text-xl font-semibold mt-6 mb-3">Storing Binary Data in JSON or XML</h3>
+  <p>Since JSON and XML are text-based formats, you cannot directly include binary data like images or files. Base64 encoding lets you embed binary content as a text string within these formats, which is common in APIs that handle file uploads or document storage.</p>
+
+  <h2 class="text-2xl font-bold mt-8 mb-4">How to Encode and Decode Base64</h2>
+  <p>You can encode and decode Base64 strings instantly using our <a href="/tools/base64" class="text-indigo-600 hover:underline">free Base64 Encoder/Decoder tool</a>. Simply paste your text or Base64 string, select encode or decode, and get the result immediately. Everything runs in your browser, so your data remains private.</p>
+  <p class="mt-3">For developers, most programming languages have built-in Base64 support. In JavaScript, you can use the <code class="bg-gray-100 px-2 py-1 rounded text-sm">btoa()</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">atob()</code> functions. Python provides the <code class="bg-gray-100 px-2 py-1 rounded text-sm">base64</code> module. In the command line, you can use the <code class="bg-gray-100 px-2 py-1 rounded text-sm">base64</code> command on macOS and Linux.</p>
+
+  <h2 class="text-2xl font-bold mt-8 mb-4">When NOT to Use Base64</h2>
+  <p>Despite its usefulness, Base64 is not always the right choice. Here are situations where you should avoid it:</p>
+  <ul class="list-disc list-inside space-y-2 mt-4">
+    <li><strong>As a security measure</strong> &mdash; Base64 is not encryption. It is trivially reversible and provides zero security. Never use it to protect sensitive data.</li>
+    <li><strong>For large files</strong> &mdash; Since Base64 increases data size by 33 percent, encoding large files wastes bandwidth and memory. Use proper file transfer methods instead.</li>
+    <li><strong>For large images in CSS</strong> &mdash; Embedding large images as data URLs bloats your CSS file, prevents caching, and hurts performance. Only use data URLs for tiny assets under a few kilobytes.</li>
+    <li><strong>When binary transport is available</strong> &mdash; If your protocol supports binary data natively (like HTTP multipart uploads or WebSockets in binary mode), there is no need for Base64 overhead.</li>
+  </ul>
+
+  <!-- CTA Section -->
+  <div class="mt-10 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-6 text-center">
+    <h2 class="text-xl font-bold mb-2">Try Our Free Base64 Encoder/Decoder</h2>
+    <p class="text-gray-600 mb-4">Encode and decode Base64 strings instantly in your browser. No sign-up required. Your data stays private.</p>
+    <a href="/tools/base64" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+      Encode/Decode Base64 Now
+    </a>
+  </div>
+</BlogLayout>

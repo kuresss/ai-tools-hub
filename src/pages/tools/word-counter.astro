@@ -66,6 +66,40 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       <li><strong>No sign-up required</strong> - Just paste and count</li>
     </ul>
   </div>
+
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4">How to Use the Word Counter</h2>
+    <ol class="list-decimal pl-6 space-y-3 text-gray-600">
+      <li><strong>Paste or type your text</strong> — Enter your text into the input area. All statistics update automatically in real time as you type.</li>
+      <li><strong>View your word count</strong> — Check the word, character, sentence, and paragraph counts displayed below the input area.</li>
+      <li><strong>Check reading and speaking time</strong> — See estimated reading time (based on 200 WPM) and speaking time (based on 130 WPM) for your text.</li>
+      <li><strong>Copy or clear</strong> — Use the Copy button to copy your text to clipboard, or Clear to start over with new text.</li>
+    </ol>
+  </div>
+
+  <div class="mt-12 space-y-6">
+    <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">How does the word counter calculate word count?</summary>
+      <p class="mt-3 text-gray-600 text-sm">The tool splits your text by whitespace characters (spaces, tabs, line breaks) and counts each resulting segment as a word. This matches the standard word counting method used by most text editors and word processors.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What is the difference between characters and characters without spaces?</summary>
+      <p class="mt-3 text-gray-600 text-sm">The "Characters" count includes every character in your text including spaces, while "No Spaces" counts only non-whitespace characters. Many platforms like Twitter count all characters, while others like some SMS services only count non-space characters.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">How accurate is the reading time estimate?</summary>
+      <p class="mt-3 text-gray-600 text-sm">The reading time is calculated using an average adult reading speed of 200 words per minute. Actual reading speed varies by person and content complexity, but this is the standard benchmark used by platforms like Medium and WordPress.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Can I use this tool for essay word count limits?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Yes, this tool is perfect for checking if your essay, assignment, or article meets specific word count requirements. It counts words in real time, so you can see exactly when you hit your target as you write or edit.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Does the word counter work with all languages?</summary>
+      <p class="mt-3 text-gray-600 text-sm">The word counter works with any language that uses spaces to separate words, including English, Spanish, French, German, and more. For languages like Chinese or Japanese that do not use spaces between words, the character count will be accurate but the word count may not reflect actual word boundaries.</p>
+    </details>
+  </div>
 </ToolLayout>
 
 <script>

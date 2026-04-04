@@ -82,6 +82,40 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
     <h3>Privacy-First Translation</h3>
     <p>Unlike Google Translate or DeepL, this tool processes your text entirely on your device. The AI model is downloaded once and runs locally. This makes it ideal for translating sensitive or confidential documents.</p>
   </div>
+
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4">How to Use the AI Translator</h2>
+    <ol class="list-decimal pl-6 space-y-3 text-gray-600">
+      <li><strong>Select a language pair</strong> — Choose the source and target languages from the dropdown menu (e.g., English to French).</li>
+      <li><strong>Enter your text</strong> — Type or paste the text you want to translate into the Source Text box. The tool supports up to 1,000 characters per translation.</li>
+      <li><strong>Click "Translate"</strong> — The AI model will download on first use (30-60 seconds). After loading, translations are generated in seconds.</li>
+      <li><strong>Copy the result</strong> — Click "Copy Translation" to copy the translated text to your clipboard for use anywhere.</li>
+    </ol>
+  </div>
+
+  <div class="mt-12 space-y-6">
+    <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Is this translator free and does it work offline?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Yes, the AI Translator is completely free with no usage limits. After the translation model is downloaded the first time, it is cached in your browser. However, you do need an internet connection for the initial model download.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">How does this compare to Google Translate?</summary>
+      <p class="mt-3 text-gray-600 text-sm">The key advantage is privacy: your text never leaves your device. Google Translate sends your text to Google's servers. The translation quality is good for general text, though Google Translate may produce more fluent results for complex sentences.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What languages are supported?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Currently the tool supports translation between English and four languages: French, German, Spanish, and Chinese. Each language pair uses a dedicated neural translation model for optimal quality.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Is my text kept private when using this tool?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Absolutely. The AI translation model runs entirely in your browser using WebAssembly. No text is transmitted to any server, making this tool ideal for translating confidential documents, personal messages, or sensitive business content.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Why does the first translation take so long?</summary>
+      <p class="mt-3 text-gray-600 text-sm">The first translation requires downloading the AI model, which is typically 30-100 MB depending on the language pair. This only happens once per language pair, as the model is cached in your browser. Subsequent translations are much faster.</p>
+    </details>
+  </div>
 </ToolLayout>
 
 <script type="module">

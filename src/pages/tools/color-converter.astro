@@ -114,6 +114,40 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
     <h3>How to Use the Color Converter</h3>
     <p>Type a color value in any supported format (HEX, RGB, or HSL) into the input field, or use the color picker. The tool will instantly convert and display the color in all formats with a live preview.</p>
   </div>
+
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4">How to Use the Color Converter</h2>
+    <ol class="list-decimal pl-6 space-y-3 text-gray-600">
+      <li><strong>Enter a color value</strong> — Type a color in HEX (e.g., #FF5733), RGB (e.g., rgb(255,87,51)), or HSL (e.g., hsl(11,100%,60%)) format into the input field.</li>
+      <li><strong>Or use the color picker</strong> — Click the color picker square to visually select any color you need.</li>
+      <li><strong>View all formats</strong> — The tool instantly displays the equivalent color in HEX, RGB, and HSL with a live color preview.</li>
+      <li><strong>Copy the format you need</strong> — Click "Copy" next to any color format to copy the value to your clipboard for use in CSS, design tools, or code.</li>
+    </ol>
+  </div>
+
+  <div class="mt-12 space-y-6">
+    <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What is the difference between HEX, RGB, and HSL color formats?</summary>
+      <p class="mt-3 text-gray-600 text-sm">HEX is a six-character hexadecimal representation commonly used in CSS (e.g., #FF5733). RGB defines colors by their Red, Green, and Blue channel values from 0 to 255. HSL represents colors by Hue (0-360 degrees), Saturation (0-100%), and Lightness (0-100%), which many designers find more intuitive for adjusting colors.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">How do I convert HEX to RGB manually?</summary>
+      <p class="mt-3 text-gray-600 text-sm">To convert HEX to RGB, split the six-character hex code into three pairs (RR, GG, BB) and convert each pair from hexadecimal to decimal. For example, #FF5733 becomes R=255 (FF), G=87 (57), B=51 (33). This tool automates this conversion instantly.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Which color format should I use in CSS?</summary>
+      <p class="mt-3 text-gray-600 text-sm">All three formats are valid in CSS. HEX is the most compact and widely used. RGB is useful when you need to programmatically adjust individual channels. HSL is best when you want to create color variations by adjusting lightness or saturation while keeping the same hue.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Can I use shorthand HEX codes like #FFF?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Yes, this tool supports 3-character shorthand HEX codes. A shorthand like #F57 is automatically expanded to #FF5577 by doubling each character. Shorthand codes are convenient for simple colors but can only represent a subset of the full 16 million color range.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Does this tool support transparency or alpha channels?</summary>
+      <p class="mt-3 text-gray-600 text-sm">The current version converts between opaque HEX, RGB, and HSL values without alpha channel support. For transparent colors, you can take the RGB or HSL output and manually add an alpha value in your CSS (e.g., rgba(255, 87, 51, 0.5) or hsla(11, 100%, 60%, 0.5)).</p>
+    </details>
+  </div>
 </ToolLayout>
 
 <script>

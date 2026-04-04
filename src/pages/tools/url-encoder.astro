@@ -64,6 +64,40 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       <li>Debugging encoded URLs from logs or analytics</li>
     </ul>
   </div>
+
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4">How to Use the URL Encoder & Decoder</h2>
+    <ol class="list-decimal pl-6 space-y-3 text-gray-600">
+      <li><strong>Paste your text or URL</strong> — Enter the URL or text string you want to encode or decode into the input field.</li>
+      <li><strong>Choose the operation</strong> — Click "Encode URL" for full URI encoding, "Encode Component" for query parameter encoding, or "Decode" to convert percent-encoded strings back to readable text.</li>
+      <li><strong>View the result</strong> — The encoded or decoded output appears in the output field below.</li>
+      <li><strong>Copy or swap</strong> — Use "Copy Output" to copy the result to your clipboard, or "Swap" to move the output back to the input for further processing.</li>
+    </ol>
+  </div>
+
+  <div class="mt-12 space-y-6">
+    <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">What is the difference between encodeURI and encodeURIComponent?</summary>
+      <p class="mt-3 text-gray-600 text-sm">encodeURI encodes a full URL but preserves characters that have special meaning in URLs such as ://?#=&. encodeURIComponent encodes everything including those special characters, making it ideal for encoding individual query parameter values that might contain reserved characters.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Why do I need to URL encode special characters?</summary>
+      <p class="mt-3 text-gray-600 text-sm">URLs can only contain a limited set of ASCII characters. Special characters like spaces, ampersands, and non-English characters must be percent-encoded to be safely transmitted in URLs. Without encoding, these characters can break the URL structure or be misinterpreted by servers.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">How are spaces encoded in URLs?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Spaces are encoded as %20 in standard URL encoding. You may also see + used to represent spaces in HTML form submissions (application/x-www-form-urlencoded format). This tool uses the standard %20 encoding which is universally compatible.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Does this tool support UTF-8 and international characters?</summary>
+      <p class="mt-3 text-gray-600 text-sm">Yes, this URL encoder fully supports UTF-8 characters including Japanese, Chinese, Arabic, and all other Unicode text. Each character is encoded as a sequence of percent-encoded bytes according to the UTF-8 standard.</p>
+    </details>
+    <details class="border border-gray-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Is my data sent to a server when encoding or decoding?</summary>
+      <p class="mt-3 text-gray-600 text-sm">No, all encoding and decoding is performed locally in your browser using JavaScript's built-in encodeURI, encodeURIComponent, and decodeURIComponent functions. Your data never leaves your device, making it safe for sensitive URLs and API keys.</p>
+    </details>
+  </div>
 </ToolLayout>
 
 <script>
